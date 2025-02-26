@@ -386,8 +386,8 @@
 
             mensaje += `\n\nMe gustaría registrar una reclamación formal `;
             mensaje += `exigiendo que se cumplan los presupuestos participativos vecinales ya votados por los vecinos `;
-            mensaje += `y que se mantengan con el mismo reglamento vinculante y participativo.\n\n`;
-            mensaje += `Considero inaceptable que el Ayuntamiento haya decidido unilateralmente eliminar este proceso democrático `;
+            mensaje += `y que se mantengan con el mismo carácter vinculante y participativo.\n\n`;
+            mensaje += `Considero inaceptable que el Ayuntamiento haya decidido unilateralmente paralizar este proceso democrático `;
             mensaje += `que permitía a los ciudadanos decidir directamente sobre una parte del presupuesto municipal.\n\n`;
             mensaje += `Solicito que se respete la voluntad ciudadana y se restablezca el modelo anterior de presupuestos participativos.\n\n`;
             mensaje += `Un saludo.`;
@@ -549,7 +549,7 @@
         // Cargar y renderizar datos
         async function fetchStats() {
             try {
-                const response = await fetch('http://participa.aldeapucela.com/presupuestos-2025/stats_reclamaciones.json');
+                const response = await fetch('http://datos.vallabus.com/reclamaciones/stats_reclamaciones.json');
                 statsData = await response.json();
 
                 // Actualizar contadores
