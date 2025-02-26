@@ -1,0 +1,40 @@
+.card-icon, .text-primary, .text-aldeapucela {
+    color: hsl(273, 23.2%, 30.5%);
+}
+
+.text-secondary {
+    color: hsl(273, 48.2%, 50%);
+}
+
+a {
+    color: hwb(273 24% 62%);
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+#share-button {
+    background-color: hsl(168.8, 48.2%, 95%);
+}
+
+.bg-aldeapucela {
+    background-color: hsl(273, 48.2%, 32.5%);
+}
+
+.bg-aldeapucela-light {
+    background-color: hsl(273, 48.2%, 98%);
+}
+
+.border-aldeapucela {
+    border-color: hsl(273, 48.2%, 32.5%);
+}
+
+.border-aldeapucela-light {
+    border-color: hsl(273, 48.2%, 95%);
+}
+
+#bluesky-icon {
+    background-image: url('../img/bluesky-square.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
