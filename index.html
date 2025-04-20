@@ -3,6 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Seguridad: Content Security Policy y otras -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://stats.aldeapucela.org https://foro.aldeapucela.org 'unsafe-inline';
+      style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;
+      img-src 'self' data: https://participa.aldeapucela.org https://stats.aldeapucela.org;
+      font-src 'self' https://cdn.jsdelivr.net;
+      connect-src 'self' https://stats.aldeapucela.org https://participa.aldeapucela.org;
+      frame-src 'self' https://foro.aldeapucela.org;
+      frame-ancestors 'self' https://participa.aldeapucela.org https://aldeapucela.org;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    ">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
     
     <!-- SEO Meta Tags -->
     <title>Participación vecinal - Aldea Pucela</title>
