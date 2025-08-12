@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Seguridad: Content Security Policy y otras -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://stats.aldeapucela.org https://foro.aldeapucela.org 'unsafe-inline';
+      style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;
+      img-src 'self' data: https://participa.aldeapucela.org https://stats.aldeapucela.org https://aldeapucela.org;
+      font-src 'self' https://cdn.jsdelivr.net;
+      connect-src 'self' https://stats.aldeapucela.org https://participa.aldeapucela.org;
+      frame-src 'self' https://foro.aldeapucela.org;
+      frame-ancestors 'self' https://participa.aldeapucela.org https://aldeapucela.org;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    ">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
+    <!-- SEO Meta Tags -->
+    <title>Asistente de reclamaciones por Integración Ferroviaria - Aldea Pucela</title>
+    <meta name="description" content="Reclama al ayuntamiento que mantenga los acuerdos de integración ferroviaria de 2017 y evite el desastre de Valladolid">
+    <meta name="keywords" content="Integración Ferroviaria, Valladolid, ayuntamiento, Sociedad Valladolid Alta Velocidad, soterramiento">
+    <meta name="author" content="aldeapucela">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://participa.aldeapucela.org/integracion-ferroviaria">
+    <meta property="og:title" content="Asistente de reclamaciones por Integración Ferroviaria">
+    <meta property="og:description" content="Reclama al ayuntamiento que mantenga los acuerdos de integración ferroviaria de 2017 y evite el desastre de Valladolid">
+    <meta property="og:image" content="https://participa.aldeapucela.org/integracion-ferroviaria/img/social-preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://participa.aldeapucela.org/integracion-ferroviaria">
+    <meta property="twitter:title" content="Asistente de reclamaciones por Integración Ferroviaria">
+    <meta property="twitter:description" content="Reclama al ayuntamiento que mantenga los acuerdos de integración ferroviaria de 2017 y evite el desastre de Valladolid">
+    <meta property="twitter:image" content="https://participa.aldeapucela.org/integracion-ferroviaria/img/social-preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="apple-touch-icon" href="../favicon.png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-100 min-h-screen sm:p-8 p-2">
+    <div class="max-w-2xl mx-auto space-y-2">
+        <a href="/" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors">
+            <i data-lucide="arrow-left" class="h-4 w-4"></i>
+            volver a campañas
+        </a>
+        
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-6">
+            <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="train" class="h-12 w-12 lg:h-6 lg:w-6 text-aldeapucela"></i>
+                <h1 class="text-xl font-semibold text-aldeapucela">Asistente de reclamaciones por Integración Ferroviaria</h1>
+            </div>
+
+            <div class="flex justify-center gap-8 pt-2">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="users" class="h-5 w-5 text-aldeapucela"></i>
+                    <span id="total-reclamaciones" class="font-bold text-aldeapucela">0</span> reclamaciones
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="building-2" class="h-5 w-5 text-aldeapucela"></i>
+                    <span id="total-barrios" class="font-bold text-aldeapucela">0</span> barrios
+                </div>
+            </div>
+
+            <div class="text-gray-600 text-sm bg-red-50 border border-red-200 p-6 rounded-lg">
+                <div class="font-bold text-red-800 text-center mb-4">¡SITUACIÓN URGENTE!</div>
+                
+                <div class="space-y-3">
+                    <p>El Ministerio de Transportes <strong>iniciará la disolución de la Sociedad Valladolid Alta Velocidad</strong> si el Ayuntamiento no aprueba la licitación de los pasos de Ariza en septiembre.</p>
+                    
+                    <p>Esto significaría <strong>perder toda la inversión ferroviaria</strong> y una deuda de <strong>más de 400 millones de euros</strong> que pagaremos todos los vecinos.</p>
+                    
+                    <p>Este formulario te ayuda a reclamar al ayuntamiento que <strong>mantenga los acuerdos de 2017</strong> y evite el desastre.</p>
+                </div>
+            </div>
+            
+            <form id="complaintForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">¿Cómo te llamas? *</label>
+                    <input type="text" id="nombre" required placeholder="Ej: María" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-aldeapucela focus:border-aldeapucela">
+                    <div class="error-message hidden text-red-600 text-sm" id="nombre-error">Este campo es obligatorio</div>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">¿En qué barrio resides? (opcional)</label>
+                    <select id="barrio" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-aldeapucela focus:border-aldeapucela">
+                        <option value="">Selecciona uno</option>
+                        <option value="Arturo Eyries">Arturo Eyries</option>
+                        
+                        <option value="Barrio España">Barrio España</option>
+                        
+                        <option value="Batallas">Batallas</option>
+                        
+                        <option value="Belén - Pilarica">Belén - Pilarica</option>
+                        
+                        <option value="Campo Grande">Campo Grande</option>
+                        
+                        <option value="Caño Argales">Caño Argales</option>
+                        
+                        <option value="Circular">Circular</option>
+                        
+                        <option value="Coto de Simancas">Coto de Simancas</option>
+                        
+                        <option value="Covaresa">Covaresa</option>
+                        
+                        <option value="Cuatro de Marzo">Cuatro de Marzo</option>
+                        
+                        <option value="Delicias - Arco de Ladrillo">Delicias - Arco de Ladrillo</option>
+                        
+                        <option value="Delicias - Canterac">Delicias - Canterac</option>
+                        
+                        <option value="El Berrocal">El Berrocal</option>
+                        
+                        <option value="El Peral">El Peral</option>
+                        
+                        <option value="El Pinar">El Pinar</option>
+                        
+                        <option value="Girón">Girón</option>
+                        
+                        <option value="Hospital">Hospital</option>
+                        
+                        <option value="Huerta del Rey">Huerta del Rey</option>
+                        
+                        <option value="La Antigua - Santa Cruz">La Antigua - Santa Cruz</option>
+
+                        <option value="La Farola">La Farola</option>
+                        
+                        <option value="La Overuela">La Overuela</option>
+                        
+                        <option value="La Rubia">La Rubia</option>
+                        
+                        <option value="La Victoria">La Victoria</option>
+                        
+                        <option value="Las Flores">Las Flores</option>
+                        
+                        <option value="Las Villas - Valparaíso">Las Villas - Valparaíso</option>
+                        
+                        <option value="Pajarillos Altos">Pajarillos Altos</option>
+                        
+                        <option value="Pajarillos Bajos">Pajarillos Bajos</option>
+                        
+                        <option value="Parque Alameda - Paula López">Parque Alameda - Paula López</option>
+                        
+                        <option value="Parquesol">Parquesol</option>
+                        
+                        <option value="Pilarica - Los Santos">Pilarica - Los Santos</option>
+
+                        <option value="Pinar de Jalón">Pinar de Jalón</option>
+                        
+                        <option value="Plaza de Toros">Plaza de Toros</option>
+                        
+                        <option value="Plaza España">Plaza España</option>
+                        
+                        <option value="Plaza Mayor">Plaza Mayor</option>
+                        
+                        <option value="Polígono Argales">Polígono Argales</option>
+                        
+                        <option value="Polígono Industrial la Mora">Polígono Industrial la Mora</option>
+                        
+                        <option value="Polígono San Cristóbal">Polígono San Cristóbal</option>
+                        
+                        <option value="Puente Duero">Puente Duero</option>
+                        
+                        <option value="Puente Jardín">Puente Jardín</option>
+                        
+                        <option value="Rondilla">Rondilla</option>
+                        
+                        <option value="San Isidro">San Isidro</option>
+                        
+                        <option value="San Pablo - San Nicolás">San Pablo - San Nicolás</option>
+                        
+                        <option value="San Pedro Regalado">San Pedro Regalado</option>
+                        
+                        <option value="Soto de Medinilla">Soto de Medinilla</option>
+                        
+                        <option value="Urbanización El Pichón">Urbanización El Pichón</option>
+                        
+                        <option value="Urbanización El Plantío">Urbanización El Plantío</option>
+                        
+                        <option value="Urbanización Entrepinos">Urbanización Entrepinos</option>
+                        
+                        <option value="Urbanización Las Aceñas">Urbanización Las Aceñas</option>
+                        
+                        <option value="Vadillos">Vadillos</option>
+                        
+                        <option value="Villa del Prado">Villa del Prado</option>
+                    </select>
+                </div>
+                
+                <div class="bg-aldeapucela-light p-4 rounded-lg space-y-3">
+                    <p class="text-base text-center text-gray-700"><strong>Instrucciones</strong></p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2 pb-2">
+                            Más abajo, al pulsar enviar, se abrirá el WhatsApp del ayuntamiento
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">1</span> Manda el mensaje que aparece para iniciar
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">2</span> Deja pulsado el cuadro de escritura<br />Pulsa "Pegar" y envía ese mensaje
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">3</span> Pulsa el botón "Finalizar Petición"
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="circle-check" class="h-6 w-6"></i>
+                            <span>Recibiras un código de referencia<br /><strong>Vuelve a WhatsApp y pega el mensaje de nuevo si no te dió código</strong></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <button type="button" onclick="generarQueja()" 
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-aldeapucela text-white rounded-md hover:bg-opacity-90 transition-colors">
+                    <i data-lucide="send" class="h-4 w-4"></i>
+                    Enviar reclamación
+                </button>
+
+                <p class="text-sm text-gray-600">Consultar una reclamación ya realizada con el código de referencia</p>
+
+                <a href="https://www.valladolid.es/es/sqi#proxia-restful-sqi.1.1!/n!/query" target="_blank" rel="noopener noreferrer"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-200 text-gray-500 rounded-md hover:bg-gray-300 transition-colors">
+                    <i data-lucide="search" class="h-4 w-4"></i>
+                    Consultar existente
+                </a>
+            </form>
+        </div>
+
+        <!-- Share -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-primary mb-5">
+                    Tú puedes ayudar
+                </h2>
+                <div class="flex flex-col gap-4">
+                    <button id="share-button" onclick="sharePage()" class="w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                        Compartir este asistente
+                    </button>
+                    <p class="text-primary text-sm">
+                        En redes sociales y grupos de chat para evitar el desastre de Valladolid
+                    </p>
+                    <a href="#comments" class="w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        Ver comentarios
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-primary mb-5">
+                <h2 class="text-xl font-semibold text-primary mb-5">
+                    Estadísticas
+                </h2>
+                <p class="text-primary text-sm mb-5">
+                    Barrios por número de reclamaciones
+                </p>
+                <div class="grid sm:grid-cols-1 gap-4">
+                    <!-- Listado de Barrios -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-3 text-aldeapucela">
+                            <i data-lucide="building-2" class="inline mr-2"></i>
+                            Barrios
+                        </h3>
+                        <ul id="barriosList" class="divide-y divide-gray-200"></ul>
+                        <button onclick="toggleFullList('barrios')" 
+                                class="mt-3 text-aldeapucela hover:underline text-sm" id="toggle-barrios">
+                            Ver todos
+                        </button>
+                    </div>
+                    
+                    <!-- Evolución por semana -->
+                    <div class="bg-gray-50 p-4 rounded-lg sm:col-span-1">
+                        <h3 class="font-semibold mb-3 text-aldeapucela">
+                            <i data-lucide="calendar" class="inline mr-2"></i>
+                            Evolución por semana
+                        </h3>
+                        <canvas id="complaintsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sobre la Plataforma -->
+         <!-- Sección informes -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            
+            <div class="sm:p-6 p-4">
+                <div class="flex items-start gap-3">
+                    <div>
+                        <h2 class="text-xl font-semibold text-primary mb-2 flex items-center justify-center">
+                            <img src="https://aldeapucela.org/integracion/logo-integracion.png" alt="Plataforma por la Integración Ferroviaria" class="h-8 w-8 rounded-full mr-2">
+                            Plataforma por la Integración
+                        </h2>
+                        <p class="text-primary text-sm leading-relaxed mb-4 mt-4">
+                             Somos una agrupación vecinal independiente de cualquier partido que sirve como paraguas para todas las organizaciones y vecinos/as individuales que quieran apoyar el avance de una integración ferroviaria de calidad en Valladolid.
+                        </p>
+                        <p class="text-primary text-sm leading-relaxed mb-4">
+                            Ya contamos con el apoyo de decenas de organizaciones de la ciudad y cientos de vecinos y vecinas de diversas ideologías que quieren ver mejoras en sus barrios hoy.
+                        </p>
+                        <div class="text-center">
+                            <a href="https://integracion.aldeapucela.org/" class="mt-1 inline-block bg-aldeapucela text-white text-base py-2 px-4 rounded hover:bg-aldeapucela transition duration-300">Conoce la plataforma</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Síguenos -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100 mt-4">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-primary mb-4">Síguenos para más novedades</h2>
+                <p class="text-primary text-sm mb-6">Mantente al día de iniciativas, debates y más</p>
+                <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
+                    <a href="https://integracion.aldeapucela.org/" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="globe" class="h-8 w-8 sm:h-12 sm:w-12 text-green-600"></i>
+                        <span class="text-sm font-medium">Web</span>
+                    </a>
+                    <a href="https://t.me/AldeaPucela/18111" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="send" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                        <span class="text-sm font-medium">Telegram</span>
+                    </a>
+                    <a href="https://bsky.app/profile/integracion.aldeapucela.org" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i id="bluesky-icon" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                        <span class="text-sm font-medium">BlueSky</span>
+                    </a>
+                    <a href="https://aldeapucela.org/integracion/boletin/" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="mail" class="h-8 w-8 sm:h-12 sm:w-12 text-purple-600"></i>
+                        <span class="text-sm font-medium">Boletín</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comentarios en el foro -->
+        <div id="comments" class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+            <h2 class="text-xl font-semibold text-primary mb-2">Comentarios</h2>
+            <div class="flex justify-between items-center mb-4">
+                <p class="text-sm text-gray-600">Déjanos tu opinión también</p>
+                <a href="https://foro.aldeapucela.org/t/campana-reclama-que-el-ayuntamiento-cumpla-con-la-integracion-ferroviaria/776" class="text-sm text-aldeapucela hover:underline">Añadir comentario</a>
+            </div>
+            <div id='discourse-comments'></div>
+        </div>
+
+        <!-- Bloque de licencia -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
+            <div class="flex items-center gap-3 text-sm text-gray-600">
+                <i data-lucide="copyright" class="h-12 w-12"></i>
+                <p>
+                    El contenido está bajo licencia 
+                    <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank">
+                        Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+                    </a>
+                </p>
+                <p>
+                    <a href="https://github.com/aldeapucela/participa" target="_blank">
+                        Código
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function generarQueja() {
+            const nombreInput = document.getElementById('nombre');
+            const errorMessage = document.getElementById('nombre-error');
+            
+            // Validación del nombre
+            if (!nombreInput.value.trim()) {
+                nombreInput.classList.add('invalid');
+                errorMessage.style.display = 'block';
+                nombreInput.focus();
+                return;
+            } else {
+                nombreInput.classList.remove('invalid');
+                errorMessage.style.display = 'none';
+            }
+
+            const barrio = document.getElementById('barrio').value;
+            
+            let mensaje = `Hola, mi nombre es ${nombreInput.value.trim()}`;
+            let mensajeInit = 'Importante: 1. Manda este mensaje para iniciar. 2. Deja pulsado el cuadro de escritura y elige Pegar 3. Envía tu reclamación';
+
+            if(barrio) {
+                mensaje += `, vivo en ${barrio}`;
+            }
+
+            mensaje += `\n\nQuiero registrar una reclamación URGENTE `;
+            mensaje += `exigiendo que el Ayuntamiento mantenga los acuerdos de integración ferroviaria firmados en 2017 `;
+            mensaje += `con la Sociedad Valladolid Alta Velocidad.\n\n`;
+            mensaje += `Es inaceptable que la parálisis del equipo de gobierno esté conduciendo `;
+            mensaje += `a la disolución de la sociedad y a una deuda de más de 400 millones de euros `;
+            mensaje += `que pagaremos todos los vecinos.\n\n`;
+            mensaje += `Exijo que en septiembre se apruebe la licitación de los pasos de Ariza `;
+            mensaje += `y se abandone definitivamente el bloqueo sistemático que nos está `;
+            mensaje += `llevando al desastre.\n\n`;
+            mensaje += `La integración es la única opción para nuestra ciudad.\n\n`;
+            mensaje += `Un saludo.`;
+
+            // Enviamos evento de reclamación y guardamos fecha
+            // Solo enviamos un evento por dia y usuario
+            const hoy = new Date().toDateString();
+            const ultimaReclamacion = localStorage.getItem('ultimaReclamacionIntegracionFecha');
+
+            if (typeof _paq !== 'undefined' && ultimaReclamacion !== hoy) {
+                if (barrio) _paq.push(['trackEvent', 'IntegracionFerroviaria', 'Integracion0825Barrio', barrio]);
+                _paq.push(['trackEvent', 'IntegracionFerroviaria', 'Integracion0825', 'WhatsApp']);
+                localStorage.setItem('ultimaReclamacionIntegracionFecha', hoy);
+                console.log('Se guardó evento de reclamación de integración ferroviaria');
+            } else {
+                console.log('Ya mandaste una reclamación de integración hoy, no guardamos evento');
+            }
+
+            try {
+                await navigator.clipboard.writeText(mensaje);
+                
+                // Abrir WhatsApp
+                const numeroWhatsApp = '34660010010';
+                const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajeInit)}`;
+                window.open(url, '_blank');
+                // Crear y mostrar el diálogo flotante
+                const nombreLimpio = nombreInput.value.trim().split(' ')[0].replace(/[^a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]/gi, '');
+                showConfirmationDialog(nombreLimpio);
+
+            } catch (err) {
+                // Fallback para navegadores antiguos
+                const textarea = document.createElement('textarea');
+                document.body.appendChild(textarea);
+                textarea.value = mensaje;
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                const numeroWhatsApp = '34660010010';
+                const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajeInit)}`;
+                window.open(url, '_blank');
+                // Crear y mostrar el diálogo flotante
+                const nombreLimpio = nombreInput.value.trim().split(' ')[0].replace(/[^a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]/gi, '');
+                showConfirmationDialog(nombreLimpio);
+            }
+        }
+
+        function showConfirmationDialog(nombre) {
+            const dialog = document.createElement('div');
+                dialog.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                dialog.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-md relative">
+                        <button onclick="this.closest('.fixed').remove()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                            <i data-lucide="x" class="h-6 w-6"></i>
+                        </button>
+                        <div class="flex flex-col items-center mb-4 text-center">
+                            <i data-lucide="check-circle" class="h-10 w-10 text-aldeapucela mb-2"></i>
+                            <h3 class="text-lg font-semibold">${nombre}, ¡muchas gracias!</h3>
+                        </div>
+                        <p class="text-sm mb-3">Verifica que has recibido <strong>un código al finalizar</strong>. Si no, vuelve a WhatsApp y pega el mensaje de nuevo.</p>
+                        <p class="text-sm mb-4">Y sólo una última cosa...</p>
+                        <button onclick="sharePage()" class="w-full bg-aldeapucela text-white py-2 px-4 rounded text-sm hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="share-2" class="h-4 w-4"></i>
+                            Comparte este asistente
+                        </button>
+                        <p class="text-sm mt-3">En redes sociales y grupos de chat para evitar el desastre de Valladolid</p>
+                    </div>
+                `;
+                document.body.appendChild(dialog);
+
+                // Inicializar Lucide icons
+                lucide.createIcons();
+        }
+
+        function sharePage() {
+            const text = 'URGENTE: Reclama al ayuntamiento que mantenga los acuerdos de integración ferroviaria y evite el desastre de Valladolid\n\n';
+            
+            // Crear un objeto URL y modificarlo
+            const url = new URL(window.location.href);
+            url.hash = ''; // Eliminar anchor
+            url.search = '?mtm_campaign=integracionshare'; // Reemplazar todos los parámetros
+            
+            // Registrar el evento en Matomo
+            if (typeof _paq !== 'undefined') {
+                _paq.push(['trackEvent', 'IntegracionFerroviaria', 'Compartido', 'True']);
+            }
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Asistente de reclamaciones Integración Ferroviaria',
+                    text: text,
+                    url: url.toString()
+                })
+                .catch((error) => console.log('Error compartiendo:', error));
+            } else {
+                // Fallback para navegadores que no soportan Web Share API
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = text + url.toString();
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Texto y URL copiados al portapapeles');
+            }
+        }
+    </script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Variable global para los datos de estadísticas
+        let statsData = null;
+
+        // Funciones de estadísticas
+
+        // Renderizar listas
+        function renderList(data, containerId, showAll = false) {
+            const sortedData = Object.entries(data)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, showAll ? undefined : 10);
+
+            const container = document.getElementById(containerId);
+            container.innerHTML = sortedData.map(([name, count]) => `
+                <li class="py-2 flex justify-between items-center">
+                    <span class="text-gray-700">${name}</span>
+                    <span class="bg-aldeapucela-light px-2 py-1 rounded text-sm">${count}</span>
+                </li>
+            `).join('');
+        }
+
+        // Desplegar las listas completas
+        function toggleFullList(type) {
+            if (type === 'barrios') {
+                const showAll = document.getElementById('toggle-barrios').textContent.includes('Ver todos');
+                renderList(statsData.totales.barrios, 'barriosList', showAll);
+                document.getElementById('toggle-barrios').textContent = showAll ? 'Ver menos' : 'Ver todos';
+            }
+        }
+
+        // Cargar y renderizar datos
+        async function fetchStats() {
+            try {
+                const response = await fetch('https://participa.aldeapucela.org/integracion-ferroviaria/stats_reclamaciones.json');
+                statsData = await response.json();
+
+                // Actualizar contadores
+                document.getElementById('total-reclamaciones').textContent = statsData.totales.total_reclamaciones || 0;
+                document.getElementById('total-barrios').textContent = Object.keys(statsData.totales.barrios).length || 0;
+
+                // Renderizar listas
+                renderList(statsData.totales.barrios, 'barriosList');
+
+                // Preparar datos para el gráfico
+                const complaintsData = {
+                    labels: [],
+                    datasets: [{
+                        label: 'Reclamaciones totales',
+                        data: [],
+                        backgroundColor: 'hsl(273, 48.2%, 32.5%)',
+                        borderColor: 'hsl(273, 48.2%, 55%)',
+                        borderWidth: 1
+                    }]
+                };
+
+                // Funciones auxiliares
+                function getISOWeek(date) {
+                    const d = new Date(date);
+                    d.setHours(0, 0, 0, 0);
+                    d.setDate(d.getDate() + 4 - (d.getDay() || 7)); // Ajustar al jueves
+                    const yearStart = new Date(d.getFullYear(), 0, 1);
+                    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                    return { isoYear: d.getFullYear(), isoWeek: weekNo };
+                }
+
+                function getWeekRange(date) {
+                    const d = new Date(date);
+                    const day = d.getDay();
+                    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Lunes anterior
+                    const start = new Date(d.setDate(diff));
+                    const end = new Date(start);
+                    end.setDate(start.getDate() + 6);
+                    return { start, end };
+                }
+
+                function formatWeekLabel(start, end) {
+                    const format = (date) => `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}`;
+                    return `${format(start)} - ${format(end)}`;
+                }
+
+                // Procesar fechas ordenadas
+                const historicoDates = Object.keys(statsData.historico).sort();
+                let currentWeekKey = null;
+                let currentWeekTotal = 0;
+                let currentLabel = '';
+
+                for (const fecha of historicoDates) {
+                    const date = new Date(fecha);
+                    const { isoYear, isoWeek } = getISOWeek(date);
+                    const weekKey = `${isoYear}-${isoWeek}`;
+
+                    if (weekKey !== currentWeekKey) {
+                        if (currentWeekKey !== null) {
+                            complaintsData.labels.push(currentLabel);
+                            complaintsData.datasets[0].data.push(currentWeekTotal);
+                        }
+                        currentWeekKey = weekKey;
+                        const weekRange = getWeekRange(date);
+                        currentLabel = formatWeekLabel(weekRange.start, weekRange.end);
+                        currentWeekTotal = statsData.historico[fecha].total_reclamaciones;
+                    } else {
+                        currentWeekTotal = statsData.historico[fecha].total_reclamaciones;
+                    }
+                }
+
+                // Añadir la última semana
+                if (currentWeekKey !== null) {
+                    complaintsData.labels.push(currentLabel);
+                    complaintsData.datasets[0].data.push(currentWeekTotal);
+                }
+
+                // Dibujar el gráfico
+                const ctx = document.getElementById('complaintsChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: complaintsData,
+                    options: {
+                        scales: { y: { beginAtZero: true } },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: { color: '#333', font: { size: 12 } }
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+                // Si no hay estadísticas, mostrar 0
+                document.getElementById('total-reclamaciones').textContent = 0;
+                document.getElementById('total-barrios').textContent = 0;
+            }
+        }
+
+        // Llamar a la función para cargar los datos
+        fetchStats();
+
+        // Matomo tracking
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="https://stats.aldeapucela.org/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '12']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+
+    <script type="text/javascript">
+        window.DiscourseEmbed = {
+        discourseUrl: 'https://foro.aldeapucela.org/', // Replace with your Discourse URL
+        topicId: 776  // Placeholder - needs to be updated with actual topic ID
+        };
+    
+        (function() {
+        var d = document.createElement('script');
+        d.type = 'text/javascript';
+        d.async = true;
+        d.src = window.DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+    
+        var head = document.getElementsByTagName('head')[0];
+        var body = document.getElementsByTagName('body')[0];
+    
+        if (head) {
+            head.appendChild(d);
+        } else if (body) {
+            body.appendChild(d);
+        } else {
+            console.error('Neither <head> nor <body> elements found.');
+        }
+        })();
+    </script>
+</body>
+</html>
