@@ -205,6 +205,12 @@
                 
                 <div class="bg-aldeapucela-light p-4 rounded-lg space-y-3">
                     <p class="text-base text-center text-gray-700"><strong>Instrucciones</strong></p>
+                    <div class="mt-0">
+                        <a href="#" class="text-sm text-gray-600 underline flex items-center gap-2 font-normal" onclick="openVideoModal()">
+                            <i data-lucide="play-circle" class="h-5 w-5"></i>
+                            Ver vídeo explicativo
+                        </a>
+                    </div>
                     <ul class="space-y-2 text-sm text-gray-600">
                         <li class="flex items-center gap-2 pb-2">
                             Más abajo, al pulsar enviar, se abrirá el WhatsApp del ayuntamiento
@@ -379,6 +385,18 @@
         </div>
     </div>
 
+    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-50 p-4">
+        <div class="relative max-w-3xl mx-auto my-8 bg-white rounded-lg shadow-xl">
+            <button onclick="closeVideoModal()" class="absolute top-2 right-2 bg-white rounded-full p-2 shadow-md z-20">
+                <i data-lucide="x" class="h-6 w-6"></i>
+            </button>
+            
+            <div id="videoContainer" class="p-4 pt-10">
+                <!-- El video se cargará aquí dinámicamente -->
+            </div>
+        </div>
+    </div>
+
     <script>
         async function generarQueja() {
             const nombreInput = document.getElementById('nombre');
@@ -516,6 +534,26 @@
                 document.body.removeChild(dummy);
                 alert('Texto y URL copiados al portapapeles');
             }
+        }
+
+        function openVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const videoContainer = document.getElementById('videoContainer');
+            modal.classList.remove('hidden');
+            videoContainer.innerHTML = `
+                <video src="../presupuestos-2025/video/instrucciones.mp4" controls style="max-height: 70vh; max-width: 100%;" class="mx-auto">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+            `;
+            // Ensure Lucide icons are initialized for the close button
+            lucide.createIcons();
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const videoContainer = document.getElementById('videoContainer');
+            modal.classList.add('hidden');
+            videoContainer.innerHTML = ''; // Elimina el video al cerrar el modal
         }
     </script>
 
