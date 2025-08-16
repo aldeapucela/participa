@@ -218,11 +218,20 @@
                         <li class="flex items-center gap-2">
                             <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">1</span> Manda el mensaje que aparece para iniciar
                         </li>
+                        <li class="flex flex-col items-center gap-2 pb-5">
+                            <img src="../img/paso1.jpg" alt="Paso 1: Manda el mensaje de inicio" class="w-60 h-auto rounded-lg shadow-sm">
+                        </li>
                         <li class="flex items-center gap-2">
                             <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">2</span> Deja pulsado el cuadro de escritura<br />Pulsa "Pegar" y envía ese mensaje
                         </li>
+                        <li class="flex flex-col items-center gap-2 pb-5">
+                            <img src="../img/paso2.jpg" alt="Paso 2: Pulsa pegar" class="w-60 h-auto rounded-lg shadow-sm">
+                        </li>
                         <li class="flex items-center gap-2">
                             <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">3</span> Pulsa el botón "Finalizar Petición"
+                        </li>
+                        <li class="flex flex-col items-center gap-2 pb-5">
+                            <img src="../img/paso3.jpg" alt="Paso 3: Pulsa en finalizar" class="w-60 h-auto rounded-lg shadow-sm">
                         </li>
                         <li class="flex items-center gap-2">
                             <i data-lucide="circle-check" class="h-6 w-6"></i>
@@ -553,7 +562,7 @@
             const videoContainer = document.getElementById('videoContainer');
             modal.classList.remove('hidden');
             videoContainer.innerHTML = `
-                <video src="../presupuestos-2025/video/instrucciones.mp4" controls style="max-height: 70vh; max-width: 100%;" class="mx-auto">
+                <video src="../video/instrucciones.mp4" controls style="max-height: 70vh; max-width: 100%;" class="mx-auto">
                     Tu navegador no soporta el elemento de video.
                 </video>
             `;
