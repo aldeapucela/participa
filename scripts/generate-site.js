@@ -100,6 +100,50 @@ function generateIndexPage(campaigns) {
                 `).join('')}
             </div>
         </div>
+
+        <!-- Footer -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100 mt-4">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-primary mb-4">Síguenos para más novedades</h2>
+                <p class="text-primary text-sm mb-6">Mantente al día de iniciativas, debates y más</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <a href="https://t.me/aldeapucela" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="send" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                        <span class="text-sm font-medium">Telegram</span>
+                    </a>
+                    <a href="https://foro.aldeapucela.org" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="message-square" class="h-8 w-8 sm:h-12 sm:w-12 text-green-600"></i>
+                        <span class="text-sm font-medium">Foro</span>
+                    </a>
+                    <a href="https://creators.spotify.com/pod/show/aldea-pucela" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="podcast" class="h-8 w-8 sm:h-12 sm:w-12 text-purple-600"></i>
+                        <span class="text-sm font-medium">Podcasts</span>
+                    </a>
+                    <a href="https://bsky.app/profile/pucelobot.aldeapucela.org" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div id="bluesky-icon" class="h-8 w-8 sm:h-12 sm:w-12"></div>
+                        <span class="text-sm font-medium">BlueSky</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloque de licencia -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
+            <div class="flex items-center gap-3 text-sm text-gray-600">
+                <i data-lucide="copyright" class="h-12 w-12"></i>
+                <p>
+                    El contenido está bajo licencia 
+                    <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank">
+                        Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+                    </a>
+                </p>
+                <p>
+                    <a href="https://github.com/aldeapucela/participa" target="_blank">
+                        Código
+                    </a>
+                </p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -132,69 +176,25 @@ async function generateCampaignPage(campaign) {
     console.log(`  ⚠️  No stats found for ${slug}, using defaults`);
   }
   
-  // 2. Generar HTML (por ahora simple)
-  const html = `<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${campaign.title} - Aldea Pucela</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="bg-gray-100 min-h-screen sm:p-8 p-2">
-    <div class="max-w-2xl mx-auto space-y-2">
-        <a href="/" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors">
-            <i data-lucide="arrow-left" class="h-4 w-4"></i>
-            volver a campañas
-        </a>
-        
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-6">
-            <div class="flex items-center gap-2 mb-4">
-                <i data-lucide="${campaign.icon}" class="h-12 w-12 lg:h-6 lg:w-6 text-aldeapucela"></i>
-                <h1 class="text-xl font-semibold text-aldeapucela">${campaign.title}</h1>
-            </div>
-
-            <div class="flex justify-center gap-8 pt-2">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="users" class="h-5 w-5 text-aldeapucela"></i>
-                    <span class="font-bold text-aldeapucela">${stats.totales.total_reclamaciones}</span> reclamaciones
-                </div>
-                <div class="flex items-center gap-2">
-                    <i data-lucide="building-2" class="h-5 w-5 text-aldeapucela"></i>
-                    <span class="font-bold text-aldeapucela">${stats.totales.total_barrios}</span> barrios
-                </div>
-            </div>
-
-            <p class="text-gray-600 text-sm bg-aldeapucela-light p-6 rounded-lg">
-                ${campaign.description}
-                <br /><br />
-                <strong>🚧 Página generada automáticamente desde NocoDB</strong>
-            </p>
-            
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h2 class="font-semibold mb-3 text-aldeapucela">Estadísticas por barrio</h2>
-                <ul class="divide-y divide-gray-200">
-                    ${Object.entries(stats.totales.barrios)
-                      .sort(([,a], [,b]) => b - a)
-                      .slice(0, 10)
-                      .map(([barrio, count]) => `
-                        <li class="py-2 flex justify-between items-center">
-                            <span class="text-gray-700">${barrio || '(sin especificar)'}</span>
-                            <span class="bg-aldeapucela-light px-2 py-1 rounded text-sm">${count}</span>
-                        </li>
-                    `).join('')}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
-</html>`;
+  // 2. Cargar template
+  const templatePath = path.join(__dirname, '..', '_templates', 'campaign.html');
+  const templateSource = fs.readFileSync(templatePath, 'utf8');
+  
+  // 3. Registrar partial de barrios
+  const barriosPartialPath = path.join(__dirname, '..', '_templates', 'partials', 'barrios-options.html');
+  const barriosPartial = fs.readFileSync(barriosPartialPath, 'utf8');
+  Handlebars.registerPartial('barrios-options', barriosPartial);
+  
+  // 4. Registrar helper json
+  Handlebars.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+  });
+  
+  // 5. Compilar template
+  const template = Handlebars.compile(templateSource);
+  
+  // 6. Generar HTML con Handlebars
+  const html = template({ campaign, stats });
 
   // 3. Crear carpeta si no existe
   const campaignDir = path.join(__dirname, '..', slug);

@@ -3,9 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Seguridad: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://stats.aldeapucela.org https://foro.aldeapucela.org https://proyectos.aldeapucela.org 'unsafe-inline';
+      style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;
+      img-src 'self' data: https://participa.aldeapucela.org https://stats.aldeapucela.org;
+      font-src 'self' https://cdn.jsdelivr.net;
+      connect-src 'self' https://stats.aldeapucela.org https://participa.aldeapucela.org https://proyectos.aldeapucela.org;
+      frame-src 'self' https://foro.aldeapucela.org;
+      frame-ancestors 'self' https://participa.aldeapucela.org https://aldeapucela.org;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    ">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
+    <!-- SEO Meta Tags -->
     <title>Otra campaña - Aldea Pucela</title>
+    <meta name="description" content="Otra cosa">
+    <meta name="keywords" content="Otra campaña, Valladolid, ayuntamiento, participación ciudadana">
+    <meta name="author" content="aldeapucela">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://participa.aldeapucela.org/otra-campaign">
+    <meta property="og:title" content="Otra campaña">
+    <meta property="og:description" content="Otra cosa">
+    <meta property="og:image" content="https://participa.aldeapucela.org/otra-campaign/img/social-preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://participa.aldeapucela.org/otra-campaign">
+    <meta property="twitter:title" content="Otra campaña">
+    <meta property="twitter:description" content="Otra cosa">
+    <meta property="twitter:image" content="https://participa.aldeapucela.org/otra-campaign/img/social-preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="apple-touch-icon" href="../favicon.png">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-gray-100 min-h-screen sm:p-8 p-2">
@@ -24,36 +69,281 @@
             <div class="flex justify-center gap-8 pt-2">
                 <div class="flex items-center gap-2">
                     <i data-lucide="users" class="h-5 w-5 text-aldeapucela"></i>
-                    <span class="font-bold text-aldeapucela">1</span> reclamaciones
+                    <span id="total-reclamaciones" class="font-bold text-aldeapucela">1</span> reclamaciones
                 </div>
                 <div class="flex items-center gap-2">
                     <i data-lucide="building-2" class="h-5 w-5 text-aldeapucela"></i>
-                    <span class="font-bold text-aldeapucela">1</span> barrios
+                    <span id="total-barrios" class="font-bold text-aldeapucela">1</span> barrios
                 </div>
             </div>
 
             <p class="text-gray-600 text-sm bg-aldeapucela-light p-6 rounded-lg">
                 Otra cosa
-                <br /><br />
-                <strong>🚧 Página generada automáticamente desde NocoDB</strong>
             </p>
             
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h2 class="font-semibold mb-3 text-aldeapucela">Estadísticas por barrio</h2>
-                <ul class="divide-y divide-gray-200">
-                    
-                        <li class="py-2 flex justify-between items-center">
-                            <span class="text-gray-700">Covaresa</span>
-                            <span class="bg-aldeapucela-light px-2 py-1 rounded text-sm">1</span>
+            <form id="complaintForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">¿Cómo te llamas? *</label>
+                    <input type="text" id="nombre" required placeholder="Ej: María" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-aldeapucela focus:border-aldeapucela">
+                    <div class="error-message hidden text-red-600 text-sm" id="nombre-error">Este campo es obligatorio</div>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">¿En qué barrio resides? (opcional)</label>
+                    <select id="barrio" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-aldeapucela focus:border-aldeapucela">
+                        <option value="">Selecciona uno</option>
+                        <option value="Arcas Reales">Arcas Reales</option>
+                        <option value="Arturo Eyries">Arturo Eyries</option>
+                        <option value="Barrio España">Barrio España</option>
+                        <option value="Batallas">Batallas</option>
+                        <option value="Belén - Pilarica">Belén - Pilarica</option>
+                        <option value="Campo Grande">Campo Grande</option>
+                        <option value="Caño Argales">Caño Argales</option>
+                        <option value="Circular">Circular</option>
+                        <option value="Ciudad de la Comunicación">Ciudad de la Comunicación</option>
+                        <option value="Coto de Simancas">Coto de Simancas</option>
+                        <option value="Covaresa">Covaresa</option>
+                        <option value="Cuatro de Marzo">Cuatro de Marzo</option>
+                        <option value="Delicias - Arco de Ladrillo">Delicias - Arco de Ladrillo</option>
+                        <option value="Delicias - Canterac">Delicias - Canterac</option>
+                        <option value="El Berrocal">El Berrocal</option>
+                        <option value="El Peral">El Peral</option>
+                        <option value="El Pinar">El Pinar</option>
+                        <option value="Girón">Girón</option>
+                        <option value="Hospital">Hospital</option>
+                        <option value="Huerta del Rey">Huerta del Rey</option>
+                        <option value="La Antigua - Santa Cruz">La Antigua - Santa Cruz</option>
+                        <option value="La Farola">La Farola</option>
+                        <option value="La Overuela">La Overuela</option>
+                        <option value="La Rubia">La Rubia</option>
+                        <option value="La Victoria">La Victoria</option>
+                        <option value="Las Flores">Las Flores</option>
+                        <option value="Las Villas - Valparaíso">Las Villas - Valparaíso</option>
+                        <option value="Pajarillos Altos">Pajarillos Altos</option>
+                        <option value="Pajarillos Bajos">Pajarillos Bajos</option>
+                        <option value="Parque Alameda - Paula López">Parque Alameda - Paula López</option>
+                        <option value="Parquesol">Parquesol</option>
+                        <option value="Pilarica - Los Santos">Pilarica - Los Santos</option>
+                        <option value="Pinar de Jalón">Pinar de Jalón</option>
+                        <option value="Plaza de Toros">Plaza de Toros</option>
+                        <option value="Plaza España">Plaza España</option>
+                        <option value="Plaza Mayor">Plaza Mayor</option>
+                        <option value="Polígono Argales">Polígono Argales</option>
+                        <option value="Polígono Industrial la Mora">Polígono Industrial la Mora</option>
+                        <option value="Polígono San Cristóbal">Polígono San Cristóbal</option>
+                        <option value="Puente Duero">Puente Duero</option>
+                        <option value="Puente Jardín">Puente Jardín</option>
+                        <option value="Rondilla">Rondilla</option>
+                        <option value="San Isidro">San Isidro</option>
+                        <option value="San Pablo - San Nicolás">San Pablo - San Nicolás</option>
+                        <option value="San Pedro Regalado">San Pedro Regalado</option>
+                        <option value="Soto de Medinilla">Soto de Medinilla</option>
+                        <option value="Urbanización El Pichón">Urbanización El Pichón</option>
+                        <option value="Urbanización El Plantío">Urbanización El Plantío</option>
+                        <option value="Urbanización Entrepinos">Urbanización Entrepinos</option>
+                        <option value="Urbanización Las Aceñas">Urbanización Las Aceñas</option>
+                        <option value="Vadillos">Vadillos</option>
+                        <option value="Villa del Prado">Villa del Prado</option>
+                    </select>
+                </div>
+                
+                <div class="bg-aldeapucela-light p-4 rounded-lg space-y-3">
+                    <p class="text-base text-center text-gray-700"><strong>Instrucciones</strong></p>
+                    <div class="mt-0">
+                        <a href="#" class="text-sm text-gray-600 underline flex items-center gap-2 font-normal" onclick="openVideoModal()">
+                            <i data-lucide="play-circle" class="h-5 w-5"></i>
+                            Ver vídeo explicativo
+                        </a>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2 pb-2">
+                            Más abajo, al pulsar enviar, se abrirá el WhatsApp del ayuntamiento
                         </li>
+                        <li class="flex items-center gap-2">
+                            <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">1</span> Manda el mensaje que aparece para iniciar
+                        </li>
+                        <li class="flex flex-col items-center gap-2 pb-5">
+                            <img src="../img/paso1.jpg" alt="Paso 1: Manda el mensaje de inicio" class="w-60 h-auto rounded-lg shadow-sm">
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">2</span> Deja pulsado el cuadro de escritura<br />Pulsa "Pegar" y envía ese mensaje
+                        </li>
+                        <li class="flex flex-col items-center gap-2 pb-5">
+                            <img src="../img/paso2.jpg" alt="Paso 2: Pulsa pegar" class="w-60 h-auto rounded-lg shadow-sm">
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="bg-gray-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm font-bold">3</span> Pulsa el botón "Finalizar Petición"
+                        </li>
+                        <li class="flex flex-col items-center gap-2 pb-5">
+                            <img src="../img/paso3.jpg" alt="Paso 3: Pulsa en finalizar" class="w-60 h-auto rounded-lg shadow-sm">
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="circle-check" class="h-6 w-6"></i>
+                            <span>Recibiras un código de referencia<br /><strong>Vuelve a WhatsApp y pega el mensaje de nuevo si no te dió código</strong></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <button type="button" onclick="generarQueja()" 
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-aldeapucela text-white rounded-md hover:bg-opacity-90 transition-colors">
+                    <i data-lucide="send" class="h-4 w-4"></i>
+                    Enviar reclamación
+                </button>
+
+                <p class="text-sm text-gray-600">Consultar una reclamación ya realizada con el código de referencia</p>
+
+                <a href="https://www.valladolid.es/es/sqi#proxia-restful-sqi.1.1!/n!/query" target="_blank" rel="noopener noreferrer"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-200 text-gray-500 rounded-md hover:bg-gray-300 transition-colors">
+                    <i data-lucide="search" class="h-4 w-4"></i>
+                    Consultar existente
+                </a>
+            </form>
+        </div>
+
+        <!-- Share -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-primary mb-5">
+                    Tú puedes ayudar
+                </h2>
+                <div class="flex flex-col gap-4">
+                    <button id="share-button" onclick="sharePage()" class="w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                        Compartir este asistente
+                    </button>
+                    <p class="text-primary text-sm">
+                        En redes sociales y grupos de chat
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-primary mb-5">
+                    Estadísticas
+                </h2>
+                <p class="text-primary text-sm mb-5">
+                    Barrios por número de reclamaciones
+                </p>
+                <div class="grid sm:grid-cols-1 gap-4">
+                    <!-- Listado de Barrios -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-3 text-aldeapucela">
+                            <i data-lucide="building-2" class="inline mr-2"></i>
+                            Barrios
+                        </h3>
+                        <ul id="barriosList" class="divide-y divide-gray-200"></ul>
+                        <button onclick="toggleFullList('barrios')" 
+                                class="mt-3 text-aldeapucela hover:underline text-sm" id="toggle-barrios">
+                            Ver todos
+                        </button>
+                    </div>
                     
-                </ul>
+                    <!-- Evolución por semana -->
+                    <div class="bg-gray-50 p-4 rounded-lg sm:col-span-1">
+                        <h3 class="font-semibold mb-3 text-aldeapucela">
+                            <i data-lucide="calendar" class="inline mr-2"></i>
+                            Evolución por semana
+                        </h3>
+                        <canvas id="complaintsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sobre organización -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div class="sm:p-6 p-4">
+                <div class="flex items-start gap-3">
+                    <div>
+                        <h2 class="text-xl font-semibold text-primary mb-2 flex items-center justify-center">
+                            <img src="../favicon.png" alt="Organización" class="h-8 w-8 rounded-full mr-2">
+                            Aldea Pucela
+                        </h2>
+                        <p class="text-primary text-sm leading-relaxed mb-4 mt-4">
+                            Somos la comunidad vecinal online más grande sobre Valladolid y apoyamos iniciativas que fomenten la participación ciudadana en la toma de decisiones municipales.
+                        </p>
+                        <div class="text-center">
+                            <a href="https://aldeapucela.org/" class="mt-1 inline-block bg-aldeapucela text-white text-base py-2 px-4 rounded hover:bg-aldeapucela transition duration-300">Descubre la comunidad</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Síguenos -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100 mt-4">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-xl font-semibold text-primary mb-4">Síguenos para más novedades</h2>
+                <p class="text-primary text-sm mb-6">Mantente al día de iniciativas, debates y más</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <a href="https://t.me/aldeapucela" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="send" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                        <span class="text-sm font-medium">Telegram</span>
+                    </a>
+                    <a href="https://foro.aldeapucela.org" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="message-square" class="h-8 w-8 sm:h-12 sm:w-12 text-green-600"></i>
+                        <span class="text-sm font-medium">Foro</span>
+                    </a>
+                    <a href="https://creators.spotify.com/pod/show/aldea-pucela" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="podcast" class="h-8 w-8 sm:h-12 sm:w-12 text-purple-600"></i>
+                        <span class="text-sm font-medium">Podcasts</span>
+                    </a>
+                    <a href="https://bsky.app/profile/aldeapucela.org" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i id="bluesky-icon" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                        <span class="text-sm font-medium">BlueSky</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bloque de licencia -->
+        <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
+            <div class="flex items-center gap-3 text-sm text-gray-600">
+                <i data-lucide="copyright" class="h-12 w-12"></i>
+                <p>
+                    El contenido está bajo licencia 
+                    <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank">
+                        Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+                    </a>
+                </p>
+                <p>
+                    <a href="https://github.com/aldeapucela/participa" target="_blank">
+                        Código
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-50 p-4">
+        <div class="relative max-w-3xl mx-auto my-8 bg-white rounded-lg shadow-xl">
+            <button onclick="closeVideoModal()" class="absolute top-2 right-2 bg-white rounded-full p-2 shadow-md z-20">
+                <i data-lucide="x" class="h-6 w-6"></i>
+            </button>
+            
+            <div id="videoContainer" class="p-4 pt-10">
+                <!-- El video se cargará aquí dinámicamente -->
             </div>
         </div>
     </div>
 
     <script>
-        lucide.createIcons();
+        // Configuración de la campaña desde NocoDB
+        const CAMPAIGN_CONFIG = {
+            slug: 'otra-campaign',
+            whatsappNumber: '346600100100',
+            complaintTemplate: `Hola, mi nombre es {{nombre}}. Esta es una queja de prueba.`
+        };
+
+        // Stats embebidas
+        const STATS_DATA = {"filename":"stats-otra-campaign.json","campaign_slug":"otra-campaign","last_update":"2025-11-06T13:55:39.181Z","totales":{"total_reclamaciones":1,"total_barrios":1,"barrios":{"Covaresa":1}},"historico_diario":{"2025-11-06":{"total":1,"barrios":{"Covaresa":1}}},"historico_semanal":[{"week_label":"2025-11-06 - 2025-11-06","total":1}]};
     </script>
+
+    <script src="../js/campaign.js"></script>
 </body>
 </html>
