@@ -207,7 +207,7 @@ async function generarQueja() {
     // Construir mensaje desde el template
     let mensaje = CAMPAIGN_CONFIG.complaintTemplate
         .replace(/\{\{nombre\}\}/g, nombre)
-        .replace(/\{\{barrio\}\}/g, barrio ? `, vivo en ${barrio}` : '');
+        .replace(/\{\{barrio\}\}/g, barrio ? ` y vivo en ${barrio}` : '');
 
     let mensajeInit = 'Importante: 1. Manda este mensaje para iniciar. 2. Deja pulsado el cuadro de escritura y elige Pegar 3. Envía tu reclamación';
 
