@@ -1,5 +1,66 @@
+// ============================================
+// INICIALIZACIÓN
+// ============================================
+
 // Initialize Lucide icons
 lucide.createIcons();
+
+// ============================================
+// FINGERPRINTING SIMPLE
+// ============================================
+
+async function generateFingerprint() {
+    const components = [];
+    
+    // Screen
+    components.push(screen.width);
+    components.push(screen.height);
+    components.push(screen.colorDepth);
+    
+    // Timezone
+    components.push(new Date().getTimezoneOffset());
+    
+    // Language
+    components.push(navigator.language);
+    
+    // Platform
+    components.push(navigator.platform);
+    
+    // Hardware concurrency (número de CPUs)
+    components.push(navigator.hardwareConcurrency || 0);
+    
+    // Canvas fingerprint
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillStyle = '#f60';
+        ctx.fillRect(125, 1, 62, 20);
+        ctx.fillStyle = '#069';
+        ctx.fillText('Participa', 2, 15);
+        components.push(canvas.toDataURL());
+    } catch (e) {
+        components.push('canvas-error');
+    }
+    
+    // Generar hash simple
+    const fingerprint = components.join('|');
+    return await simpleHash(fingerprint);
+}
+
+// Hash simple usando SubtleCrypto API
+async function simpleHash(str) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ============================================
+// ESTADÍSTICAS
+// ============================================
 
 // Renderizar lista de barrios
 function renderList(data, containerId, showAll = false) {
@@ -68,6 +129,42 @@ function renderChart() {
     });
 }
 
+// ============================================
+// REGISTRO DE PARTICIPACIÓN
+// ============================================
+
+async function registerParticipation(barrio) {
+    try {
+        const fingerprint = await generateFingerprint();
+        
+        const response = await fetch('https://tasks.nukeador.com/webhook/aldea-participa', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                campaign_slug: CAMPAIGN_CONFIG.slug,
+                barrio: barrio || null,
+                fingerprint: fingerprint
+            })
+        });
+        
+        if (!response.ok) {
+            console.warn('Error registrando participación:', response.status);
+            return false;
+        }
+        
+        return true;
+    } catch (err) {
+        console.error('Error en registro de participación:', err);
+        return false;
+    }
+}
+
+// ============================================
+// FORMULARIO DE QUEJA
+// ============================================
+
 // Generar queja
 async function generarQueja() {
     const nombreInput = document.getElementById('nombre');
@@ -86,6 +183,13 @@ async function generarQueja() {
 
     const barrio = document.getElementById('barrio').value;
     const nombre = nombreInput.value.trim();
+    
+    // Registrar participación en segundo plano (no bloqueante)
+    registerParticipation(barrio).then(success => {
+        if (success) {
+            console.log('Participación registrada correctamente');
+        }
+    });
     
     // Construir mensaje desde el template
     let mensaje = CAMPAIGN_CONFIG.complaintTemplate
@@ -121,6 +225,10 @@ async function generarQueja() {
         showConfirmationDialog(nombreLimpio);
     }
 }
+
+// ============================================
+// DIÁLOGOS Y MODALES
+// ============================================
 
 function showConfirmationDialog(nombre) {
     const dialog = document.createElement('div');
@@ -170,6 +278,10 @@ function sharePage() {
     }
 }
 
+// ============================================
+// VIDEO MODAL
+// ============================================
+
 function openVideoModal() {
     const modal = document.getElementById('videoModal');
     const videoContainer = document.getElementById('videoContainer');
@@ -193,13 +305,42 @@ function closeVideoModal() {
     videoContainer.innerHTML = '';
 }
 
+// Cargar stats dinámicamente
+async function loadStats() {
+    try {
+        const response = await fetch(CAMPAIGN_CONFIG.statsUrl);
+        if (!response.ok) {
+            console.error('Error cargando stats:', response.status);
+            return;
+        }
+        
+        STATS_DATA = await response.json();
+        
+        // Actualizar totales en el header
+        const totalReclamaciones = document.getElementById('total-reclamaciones');
+        const totalBarrios = document.getElementById('total-barrios');
+        
+        if (totalReclamaciones && STATS_DATA.totales) {
+            totalReclamaciones.textContent = STATS_DATA.totales.total_reclamaciones;
+        }
+        if (totalBarrios && STATS_DATA.totales) {
+            totalBarrios.textContent = STATS_DATA.totales.total_barrios;
+        }
+        
+        // Renderizar stats
+        if (STATS_DATA && STATS_DATA.totales) {
+            renderList(STATS_DATA.totales.barrios, 'barriosList');
+            renderChart();
+        }
+    } catch (error) {
+        console.error('Error cargando stats:', error);
+    }
+}
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
-    // Renderizar stats
-    if (STATS_DATA && STATS_DATA.totales) {
-        renderList(STATS_DATA.totales.barrios, 'barriosList');
-        renderChart();
-    }
+    // Cargar stats dinámicamente
+    loadStats();
     
     // Discourse embed si hay forum topic
     if (typeof window.DiscourseEmbed !== 'undefined') {

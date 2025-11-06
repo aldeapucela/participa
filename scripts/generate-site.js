@@ -3,9 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
 
-// URLs públicas de los JSON generados por n8n
-const CAMPAIGNS_JSON_URL = 'https://proyectos.aldeapucela.org/exports/participa/campaigns.json';
-const STATS_BASE_URL = 'https://proyectos.aldeapucela.org/exports/participa/stats/';
+// URLs públicas de los JSON generados por n8n (configurables mediante variables de entorno)
+const CAMPAIGNS_JSON_URL = process.env.CAMPAIGNS_JSON_URL || 'https://proyectos.aldeapucela.org/exports/participa/campaigns.json';
+const STATS_BASE_URL = process.env.STATS_BASE_URL || 'https://proyectos.aldeapucela.org/exports/participa/stats/';
+const WEBHOOK_URL = process.env.WEBHOOK_URL || 'https://tasks.nukeador.com/webhook/aldea-participa';
 
 // Función para descargar el JSON
 function fetchJSON(url) {
@@ -61,6 +62,8 @@ function generateIndexPage(campaigns) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Participación vecinal - Aldea Pucela</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
@@ -82,8 +85,6 @@ function generateIndexPage(campaigns) {
                 Aquí se listan todas las campañas de participación vecinal de Aldea Pucela y organizaciones afines.
                 <br /><br />
                 Estas iniciativas buscan fomentar la implicación de la ciudadanía en la toma de decisiones y mejorar la transparencia en la gestión pública.
-                <br /><br />
-                <strong>🚧 Página generada automáticamente desde NocoDB</strong>
             </p>
             
             <div class="space-y-4">
