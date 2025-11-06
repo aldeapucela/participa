@@ -1,0 +1,12 @@
+{
+  "name": "participa-generator",
+  "version": "1.0.0",
+  "description": "Generate static campaign pages from NocoDB data",
+  "main": "generate-site.js",
+  "scripts": {
+    "generate": "node generate-site.js"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8"
+  }
+}

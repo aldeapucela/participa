@@ -12,6 +12,10 @@ a {
     font-weight: bold;
 }
 
+#campaign-description a {
+    text-decoration: underline;
+}
+
 #share-button {
     background-color: hsl(273, 48.2%, 91.5%);
 }
