@@ -76,6 +76,7 @@ Crea dos tablas:
 - about_organization_logo (URL)
 - about_organization_url (URL)
 - share_text (LongText)
+- external_url (URL, opcional)
 ```
 
 **Tabla `participations`:**
@@ -138,11 +139,21 @@ python3 -m http.server 8000
 
 ### Crear nueva campaña
 
+#### Campaña interna (formulario propio)
 1. Ve a tu instancia de NocoDB
 2. Añade un registro en la tabla `campaigns`
 3. Marca `active = true`
-4. Espera 5 minutos (GitHub Action)
-5. La página se generará automáticamente
+4. Deja `external_url` vacío
+5. Espera 5 minutos (GitHub Action)
+6. La página se generará automáticamente
+
+#### Campaña externa (enlace a web externa)
+1. Ve a tu instancia de NocoDB
+2. Añade un registro en la tabla `campaigns`
+3. Marca `active = true`
+4. Rellena el campo `external_url` con la URL completa (ej: `https://vallabus.com/reclama/?mtm_campaign=aldeapucela`)
+5. Espera 5 minutos (GitHub Action)
+6. Aparecerá en el listado como enlace directo (no genera página interna)
 
 ## 📊 Sistema de Participaciones
 

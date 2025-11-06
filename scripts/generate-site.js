@@ -43,10 +43,14 @@ async function generate() {
   console.log('📝 Generating index.html...');
   generateIndexPage(activeCampaigns);
   
-  // 5. Generar páginas individuales de cada campaña
+  // 5. Generar páginas individuales de cada campaña (excepto las externas)
   console.log('📝 Generating campaign pages...');
   for (const campaign of activeCampaigns) {
-    await generateCampaignPage(campaign);
+    if (!campaign.external_url) {
+      await generateCampaignPage(campaign);
+    } else {
+      console.log(`  ⏭️  Skipping external campaign: ${campaign.slug}`);
+    }
   }
   
   // 6. Limpiar carpetas de campañas que ya no existen
@@ -90,9 +94,12 @@ function generateIndexPage(campaigns) {
             </p>
             
             <div class="space-y-4">
-                ${campaigns.map(campaign => `
+                ${campaigns.map(campaign => {
+                    const href = campaign.external_url || `/${campaign.slug}/`;
+                    const target = campaign.external_url ? ' target="_blank" rel="noopener noreferrer"' : '';
+                    return `
                 <div class="border border-gray-200 rounded-lg p-4 hover:bg-aldeapucela-light transition-colors">
-                    <a href="/${campaign.slug}/" class="flex items-center gap-3">
+                    <a href="${href}"${target} class="flex items-center gap-3">
                         <i data-lucide="${campaign.icon}" class="h-16 w-16 text-aldeapucela"></i>
                         <div>
                             <h2 class="font-medium text-aldeapucela">${campaign.title}</h2>
@@ -100,7 +107,8 @@ function generateIndexPage(campaigns) {
                         </div>
                     </a>
                 </div>
-                `).join('')}
+                `;
+                }).join('')}
             </div>
         </div>
 
@@ -163,7 +171,8 @@ function generateIndexPage(campaigns) {
 
 function cleanupOldCampaigns(activeCampaigns) {
   const rootDir = path.join(__dirname, '..');
-  const activeSlugs = new Set(activeCampaigns.map(c => c.slug));
+  // Solo considerar campañas internas (sin external_url) para el cleanup
+  const activeSlugs = new Set(activeCampaigns.filter(c => !c.external_url).map(c => c.slug));
   
   // Leer todos los directorios en la raíz
   const entries = fs.readdirSync(rootDir, { withFileTypes: true });
@@ -200,6 +209,11 @@ async function generateCampaignPage(campaign) {
   const barriosPartialPath = path.join(__dirname, '..', '_templates', 'partials', 'barrios-options.html');
   const barriosPartial = fs.readFileSync(barriosPartialPath, 'utf8');
   Handlebars.registerPartial('barrios-options', barriosPartial);
+  
+  // 2.1. Registrar helper json
+  Handlebars.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+  });
   
   // 3. Compilar template
   const template = Handlebars.compile(templateSource);

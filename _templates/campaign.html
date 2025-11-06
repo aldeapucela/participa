@@ -65,7 +65,7 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-6">
             <div class="flex items-center gap-2 mb-4">
                 <i data-lucide="{{campaign.icon}}" class="h-12 w-12 lg:h-6 lg:w-6 text-aldeapucela"></i>
-                <h1 class="text-xl font-semibold text-aldeapucela">{{campaign.title}}</h1>
+                <h1 class="text-xl font-semibold text-aldeapucela" id="campaign-title">{{campaign.title}}</h1>
             </div>
 
             <div class="flex justify-center gap-8 pt-2">
@@ -168,10 +168,11 @@
                         En redes sociales y grupos de chat
                         {{/if}}
                     </p>
+                    <div id="newsletter-button-container"></div>
                     {{#if campaign.forum_topic_id}}
                     <a href="#comments" class="w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2">
                         <i data-lucide="message-square" class="h-5 w-5"></i>
-                        Ver comentarios
+                        <span id="comments-label">Ver comentarios</span>
                     </a>
                     {{/if}}
                 </div>
@@ -218,9 +219,9 @@
             <div class="sm:p-6 p-4">
                 <div class="flex items-start gap-3">
                     <div>
-                        <h2 class="text-xl font-semibold text-primary mb-2 flex items-center justify-center">
+                        <h2 class="text-xl font-semibold text-primary mb-2 flex items-center justify-center" id="org-title">
                             <img src="{{#if campaign.about_organization_logo}}{{campaign.about_organization_logo}}{{else}}../favicon.png{{/if}}" alt="Organización" class="h-8 w-8 rounded-full mr-2">
-                            Aldea Pucela
+                            <span id="org-name">Aldea Pucela</span>
                         </h2>
                         <p class="text-primary text-sm leading-relaxed mb-4 mt-4">
                             {{#if campaign.about_organization_text}}
@@ -230,7 +231,7 @@
                             {{/if}}
                         </p>
                         <div class="text-center">
-                            <a href="{{#if campaign.about_organization_url}}{{campaign.about_organization_url}}{{else}}https://aldeapucela.org/{{/if}}" class="mt-1 inline-block bg-aldeapucela text-white text-base py-2 px-4 rounded hover:bg-aldeapucela transition duration-300">Descubre la comunidad</a>
+                            <a href="{{#if campaign.about_organization_url}}{{campaign.about_organization_url}}{{else}}https://aldeapucela.org/{{/if}}" class="mt-1 inline-block bg-aldeapucela text-white text-base py-2 px-4 rounded hover:bg-aldeapucela transition duration-300" id="org-link-text">Descubre la comunidad</a>
                         </div>
                     </div>
                 </div>
@@ -242,7 +243,7 @@
             <div class="text-center max-w-2xl mx-auto">
                 <h2 class="text-xl font-semibold text-primary mb-4">Síguenos para más novedades</h2>
                 <p class="text-primary text-sm mb-6">Mantente al día de iniciativas, debates y más</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div id="social-links-container" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <a href="https://t.me/aldeapucela" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                         <i data-lucide="send" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
                         <span class="text-sm font-medium">Telegram</span>
@@ -256,7 +257,7 @@
                         <span class="text-sm font-medium">Podcasts</span>
                     </a>
                     <a href="https://bsky.app/profile/aldeapucela.org" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <i id="bluesky-icon" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                        <div id="bluesky-icon" class="h-8 w-8 sm:h-12 sm:w-12"></div>
                         <span class="text-sm font-medium">BlueSky</span>
                     </a>
                 </div>
@@ -314,7 +315,8 @@
             complaintTemplate: `{{{campaign.complaint_template}}}`,
             statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-{{campaign.slug}}.json',
             description: `{{{campaign.description}}}`,
-            subtitle: `{{{campaign.subtitle}}}`
+            subtitle: `{{{campaign.subtitle}}}`,
+            customConfig: {{{json campaign.custom_config}}}
         };
 
         // Stats se cargan dinámicamente
@@ -328,11 +330,99 @@
         };
         {{/if}}
 
-        // Renderizar Markdown en subtitle
+        // Aplicar custom_config si existe
         document.addEventListener('DOMContentLoaded', function() {
+            // Renderizar Markdown en subtitle
             const descriptionEl = document.getElementById('campaign-description');
             if (descriptionEl && CAMPAIGN_CONFIG.subtitle) {
                 descriptionEl.innerHTML = marked.parse(CAMPAIGN_CONFIG.subtitle);
+            }
+
+            // Aplicar configuración personalizada
+            if (CAMPAIGN_CONFIG.customConfig) {
+                const config = CAMPAIGN_CONFIG.customConfig;
+                
+                // Título personalizado
+                if (config.title) {
+                    document.getElementById('campaign-title').textContent = config.title;
+                    document.title = config.title + ' - Aldea Pucela';
+                }
+                
+                // Nombre de organización
+                if (config.org_name) {
+                    document.getElementById('org-name').textContent = config.org_name;
+                }
+                
+                // Texto del botón de organización
+                if (config.org_description) {
+                    document.getElementById('org-link-text').textContent = config.org_description;
+                }
+                
+                // Botón de newsletter
+                if (config.newsletter_url) {
+                    const newsletterBtn = document.createElement('button');
+                    newsletterBtn.className = 'w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2';
+                    newsletterBtn.innerHTML = `
+                        <i data-lucide="mail" class="h-5 w-5"></i>
+                        <a href="${config.newsletter_url}" target="_blank" rel="noopener noreferrer">Suscríbete al boletín</a>
+                    `;
+                    document.getElementById('newsletter-button-container').appendChild(newsletterBtn);
+                    lucide.createIcons();
+                }
+                
+                // Cambiar texto de comentarios
+                if (config.org_name) {
+                    const commentsLabel = document.getElementById('comments-label');
+                    if (commentsLabel) {
+                        commentsLabel.textContent = 'Comentarios';
+                    }
+                }
+                
+                // Enlaces sociales personalizados
+                if (config.social) {
+                    const socialContainer = document.getElementById('social-links-container');
+                    if (socialContainer && config.social) {
+                        socialContainer.innerHTML = '';
+                        
+                        if (config.social.web) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.web}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i data-lucide="globe" class="h-8 w-8 sm:h-12 sm:w-12 text-green-600"></i>
+                                    <span class="text-sm font-medium">Web</span>
+                                </a>
+                            `;
+                        }
+                        
+                        if (config.social.telegram) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.telegram}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i data-lucide="send" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                                    <span class="text-sm font-medium">Telegram</span>
+                                </a>
+                            `;
+                        }
+                        
+                        if (config.social.bluesky) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.bluesky}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="h-8 w-8 sm:h-12 sm:w-12" style="background-image: url('../img/bluesky-square.png'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                                    <span class="text-sm font-medium">BlueSky</span>
+                                </a>
+                            `;
+                        }
+                        
+                        if (config.social.newsletter) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.newsletter}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i data-lucide="mail" class="h-8 w-8 sm:h-12 sm:w-12 text-purple-600"></i>
+                                    <span class="text-sm font-medium">Boletín</span>
+                                </a>
+                            `;
+                        }
+                        
+                        lucide.createIcons();
+                    }
+                }
             }
         });
     </script>

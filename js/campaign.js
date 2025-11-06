@@ -98,11 +98,24 @@ function renderChart() {
         return;
     }
 
+    // Formatear labels de semana para que se vean mejor
+    const formatWeekLabel = (label) => {
+        const parts = label.split(' - ');
+        if (parts.length === 2) {
+            // Convertir "2025-10-09 - 2025-11-06" a "9 oct - 6 nov"
+            const start = new Date(parts[0]);
+            const end = new Date(parts[1]);
+            const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+            return `${start.getDate()} ${months[start.getMonth()]} - ${end.getDate()} ${months[end.getMonth()]}`;
+        }
+        return label;
+    };
+
     const ctx = canvas.getContext('2d');
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: STATS_DATA.historico_semanal.map(w => w.week_label),
+            labels: STATS_DATA.historico_semanal.map(w => formatWeekLabel(w.week_label)),
             datasets: [{
                 label: 'Reclamaciones totales',
                 data: STATS_DATA.historico_semanal.map(w => w.total),

@@ -65,7 +65,7 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-6">
             <div class="flex items-center gap-2 mb-4">
                 <i data-lucide="bike" class="h-12 w-12 lg:h-6 lg:w-6 text-aldeapucela"></i>
-                <h1 class="text-xl font-semibold text-aldeapucela">Ruedas BIKI 2025</h1>
+                <h1 class="text-xl font-semibold text-aldeapucela" id="campaign-title">Ruedas BIKI 2025</h1>
             </div>
 
             <div class="flex justify-center gap-8 pt-2">
@@ -216,9 +216,10 @@
                     <p class="text-primary text-sm">
                         En redes sociales y grupos de chat
                     </p>
+                    <div id="newsletter-button-container"></div>
                     <a href="#comments" class="w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2">
                         <i data-lucide="message-square" class="h-5 w-5"></i>
-                        Ver comentarios
+                        <span id="comments-label">Ver comentarios</span>
                     </a>
                 </div>
             </div>
@@ -264,15 +265,15 @@
             <div class="sm:p-6 p-4">
                 <div class="flex items-start gap-3">
                     <div>
-                        <h2 class="text-xl font-semibold text-primary mb-2 flex items-center justify-center">
+                        <h2 class="text-xl font-semibold text-primary mb-2 flex items-center justify-center" id="org-title">
                             <img src="../favicon.png" alt="Organización" class="h-8 w-8 rounded-full mr-2">
-                            Aldea Pucela
+                            <span id="org-name">Aldea Pucela</span>
                         </h2>
                         <p class="text-primary text-sm leading-relaxed mb-4 mt-4">
                             Somos la comunidad vecinal online más grande sobre Valladolid y apoyamos iniciativas que fomenten la participación ciudadana en la toma de decisiones municipales.
                         </p>
                         <div class="text-center">
-                            <a href="https://aldeapucela.org/" class="mt-1 inline-block bg-aldeapucela text-white text-base py-2 px-4 rounded hover:bg-aldeapucela transition duration-300">Descubre la comunidad</a>
+                            <a href="https://aldeapucela.org/" class="mt-1 inline-block bg-aldeapucela text-white text-base py-2 px-4 rounded hover:bg-aldeapucela transition duration-300" id="org-link-text">Descubre la comunidad</a>
                         </div>
                     </div>
                 </div>
@@ -284,7 +285,7 @@
             <div class="text-center max-w-2xl mx-auto">
                 <h2 class="text-xl font-semibold text-primary mb-4">Síguenos para más novedades</h2>
                 <p class="text-primary text-sm mb-6">Mantente al día de iniciativas, debates y más</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div id="social-links-container" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <a href="https://t.me/aldeapucela" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                         <i data-lucide="send" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
                         <span class="text-sm font-medium">Telegram</span>
@@ -298,7 +299,7 @@
                         <span class="text-sm font-medium">Podcasts</span>
                     </a>
                     <a href="https://bsky.app/profile/aldeapucela.org" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <i id="bluesky-icon" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                        <div id="bluesky-icon" class="h-8 w-8 sm:h-12 sm:w-12"></div>
                         <span class="text-sm font-medium">BlueSky</span>
                     </a>
                 </div>
@@ -354,7 +355,8 @@
             complaintTemplate: `Hola, mi nombre es {{nombre}} y vivo en {{barrio}}.  Me gustaría registrar una reclamación formal sobre el estado de las ruedas de las bicicletas de BIKI, que nos ponen en riesgo a quienes las usamos y a las personas y vehículos que nos rodean en nuestros desplazamientos.  Solicito que se inviertan en su renovación y en personal suficiente para que se lleve a cabo de forma urgente.  Un saludo.`,
             statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-ruedas-biki-2025.json',
             description: `Exige que se renueven las ruedas desgastadas de las bicicletas BIKI por seguridad y para evitar más accidentes`,
-            subtitle: `AUVASA y el Ayuntamiento de Valladolid están consintiendo la degradación del servicio BIKI al desoír las [quejas por no reemplazar las ruedas desgastadas](https://www.elespanol.com/castilla-y-leon/region/valladolid/20250922/usuarios-biki-ponen-grito-cielo-apariencia-ruedas-bicis-auvasa-responde-estetica/1003743935259_0.html), que suponen un peligro y han causado ya varios accidentes y caidas entre los vecinos/as. <br><br>La propia reglamentación de BIKI nos obliga como usuarios del servicio a informar de desperfectos y otras incidencias. Este formulario te ayudará a hacerlo directamente para exigir que se tomen medidas.`
+            subtitle: `AUVASA y el Ayuntamiento de Valladolid están consintiendo la degradación del servicio BIKI al desoír las [quejas por no reemplazar las ruedas desgastadas](https://www.elespanol.com/castilla-y-leon/region/valladolid/20250922/usuarios-biki-ponen-grito-cielo-apariencia-ruedas-bicis-auvasa-responde-estetica/1003743935259_0.html), que suponen un peligro y han causado ya varios accidentes y caidas entre los vecinos/as. <br><br>La propia reglamentación de BIKI nos obliga como usuarios del servicio a informar de desperfectos y otras incidencias. Este formulario te ayudará a hacerlo directamente para exigir que se tomen medidas.`,
+            customConfig: null
         };
 
         // Stats se cargan dinámicamente
@@ -366,11 +368,99 @@
             topicId: 818
         };
 
-        // Renderizar Markdown en subtitle
+        // Aplicar custom_config si existe
         document.addEventListener('DOMContentLoaded', function() {
+            // Renderizar Markdown en subtitle
             const descriptionEl = document.getElementById('campaign-description');
             if (descriptionEl && CAMPAIGN_CONFIG.subtitle) {
                 descriptionEl.innerHTML = marked.parse(CAMPAIGN_CONFIG.subtitle);
+            }
+
+            // Aplicar configuración personalizada
+            if (CAMPAIGN_CONFIG.customConfig) {
+                const config = CAMPAIGN_CONFIG.customConfig;
+                
+                // Título personalizado
+                if (config.title) {
+                    document.getElementById('campaign-title').textContent = config.title;
+                    document.title = config.title + ' - Aldea Pucela';
+                }
+                
+                // Nombre de organización
+                if (config.org_name) {
+                    document.getElementById('org-name').textContent = config.org_name;
+                }
+                
+                // Texto del botón de organización
+                if (config.org_description) {
+                    document.getElementById('org-link-text').textContent = config.org_description;
+                }
+                
+                // Botón de newsletter
+                if (config.newsletter_url) {
+                    const newsletterBtn = document.createElement('button');
+                    newsletterBtn.className = 'w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2';
+                    newsletterBtn.innerHTML = `
+                        <i data-lucide="mail" class="h-5 w-5"></i>
+                        <a href="${config.newsletter_url}" target="_blank" rel="noopener noreferrer">Suscríbete al boletín</a>
+                    `;
+                    document.getElementById('newsletter-button-container').appendChild(newsletterBtn);
+                    lucide.createIcons();
+                }
+                
+                // Cambiar texto de comentarios
+                if (config.org_name) {
+                    const commentsLabel = document.getElementById('comments-label');
+                    if (commentsLabel) {
+                        commentsLabel.textContent = 'Comentarios';
+                    }
+                }
+                
+                // Enlaces sociales personalizados
+                if (config.social) {
+                    const socialContainer = document.getElementById('social-links-container');
+                    if (socialContainer && config.social) {
+                        socialContainer.innerHTML = '';
+                        
+                        if (config.social.web) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.web}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i data-lucide="globe" class="h-8 w-8 sm:h-12 sm:w-12 text-green-600"></i>
+                                    <span class="text-sm font-medium">Web</span>
+                                </a>
+                            `;
+                        }
+                        
+                        if (config.social.telegram) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.telegram}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i data-lucide="send" class="h-8 w-8 sm:h-12 sm:w-12 text-blue-500"></i>
+                                    <span class="text-sm font-medium">Telegram</span>
+                                </a>
+                            `;
+                        }
+                        
+                        if (config.social.bluesky) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.bluesky}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="h-8 w-8 sm:h-12 sm:w-12" style="background-image: url('../img/bluesky-square.png'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                                    <span class="text-sm font-medium">BlueSky</span>
+                                </a>
+                            `;
+                        }
+                        
+                        if (config.social.newsletter) {
+                            socialContainer.innerHTML += `
+                                <a href="${config.social.newsletter}" target="_blank" class="flex flex-col items-center justify-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i data-lucide="mail" class="h-8 w-8 sm:h-12 sm:w-12 text-purple-600"></i>
+                                    <span class="text-sm font-medium">Boletín</span>
+                                </a>
+                            `;
+                        }
+                        
+                        lucide.createIcons();
+                    }
+                }
             }
         });
     </script>
