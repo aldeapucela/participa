@@ -217,7 +217,7 @@ async function generateCampaignPage(campaign) {
   
   // 2.1. Registrar helper json
   Handlebars.registerHelper('json', function(context) {
-    return JSON.stringify(context);
+    return context ? JSON.stringify(context) : 'null';
   });
   
   // 3. Compilar template

@@ -23,24 +23,24 @@
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
     
     <!-- SEO Meta Tags -->
-    <title>Ruedas BIKI 2025 - Aldea Pucela</title>
-    <meta name="description" content="Exige que se renueven las ruedas desgastadas de las bicicletas BIKI por seguridad y para evitar más accidentes">
-    <meta name="keywords" content="Ruedas BIKI 2025, Valladolid, ayuntamiento, participación ciudadana">
+    <title>Horarios y frecuencias de AUVASA - Aldea Pucela</title>
+    <meta name="description" content="Exige una mejora en el servicio de autobuses municipales con la herramienta de VallaBus">
+    <meta name="keywords" content="Horarios y frecuencias de AUVASA, Valladolid, ayuntamiento, participación ciudadana">
     <meta name="author" content="aldeapucela">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://participa.aldeapucela.org/ruedas-biki-2025">
-    <meta property="og:title" content="Ruedas BIKI 2025">
-    <meta property="og:description" content="Exige que se renueven las ruedas desgastadas de las bicicletas BIKI por seguridad y para evitar más accidentes">
-    <meta property="og:image" content="https://participa.aldeapucela.org/ruedas-biki-2025/img/social-preview.png">
+    <meta property="og:url" content="https://participa.aldeapucela.org/auvasa-horarios">
+    <meta property="og:title" content="Horarios y frecuencias de AUVASA">
+    <meta property="og:description" content="Exige una mejora en el servicio de autobuses municipales con la herramienta de VallaBus">
+    <meta property="og:image" content="https://participa.aldeapucela.org/auvasa-horarios/img/social-preview.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://participa.aldeapucela.org/ruedas-biki-2025">
-    <meta property="twitter:title" content="Ruedas BIKI 2025">
-    <meta property="twitter:description" content="Exige que se renueven las ruedas desgastadas de las bicicletas BIKI por seguridad y para evitar más accidentes">
-    <meta property="twitter:image" content="https://participa.aldeapucela.org/ruedas-biki-2025/img/social-preview.png">
+    <meta property="twitter:url" content="https://participa.aldeapucela.org/auvasa-horarios">
+    <meta property="twitter:title" content="Horarios y frecuencias de AUVASA">
+    <meta property="twitter:description" content="Exige una mejora en el servicio de autobuses municipales con la herramienta de VallaBus">
+    <meta property="twitter:image" content="https://participa.aldeapucela.org/auvasa-horarios/img/social-preview.png">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="../favicon.png">
@@ -64,8 +64,8 @@
         
         <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-6">
             <div class="flex items-center gap-2 mb-4">
-                <i data-lucide="bike" class="h-12 w-12 lg:h-6 lg:w-6 text-aldeapucela"></i>
-                <h1 class="text-xl font-semibold text-aldeapucela" id="campaign-title">Ruedas BIKI 2025</h1>
+                <i data-lucide="bus" class="h-12 w-12 lg:h-6 lg:w-6 text-aldeapucela"></i>
+                <h1 class="text-xl font-semibold text-aldeapucela" id="campaign-title">Horarios y frecuencias de AUVASA</h1>
             </div>
 
             <div class="flex justify-center gap-8 pt-2">
@@ -217,10 +217,6 @@
                         En redes sociales y grupos de chat
                     </p>
                     <div id="newsletter-button-container"></div>
-                    <a href="#comments" class="w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2">
-                        <i data-lucide="message-square" class="h-5 w-5"></i>
-                        <span id="comments-label">Ver comentarios</span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -306,15 +302,6 @@
             </div>
         </div>
 
-        <!-- Comentarios en el foro -->
-        <div id="comments" class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
-            <h2 class="text-xl font-semibold text-primary mb-2">Comentarios</h2>
-            <div class="flex justify-between items-center mb-4">
-                <p class="text-sm text-gray-600">Déjanos tu opinión también</p>
-                <a href="https://foro.aldeapucela.org/t/818" class="text-sm text-aldeapucela hover:underline">Añadir comentario</a>
-            </div>
-            <div id='discourse-comments'></div>
-        </div>
 
         <!-- Bloque de licencia -->
         <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
@@ -350,23 +337,18 @@
     <script>
         // Configuración de la campaña desde NocoDB
         const CAMPAIGN_CONFIG = {
-            slug: 'ruedas-biki-2025',
-            whatsappNumber: '34660010010',
-            complaintTemplate: `Hola, mi nombre es {{nombre}}{{barrio}}.  Me gustaría registrar una reclamación formal sobre el estado de las ruedas de las bicicletas de BIKI, que nos ponen en riesgo a quienes las usamos y a las personas y vehículos que nos rodean en nuestros desplazamientos.  Solicito que se inviertan en su renovación y en personal suficiente para que se lleve a cabo de forma urgente.  Un saludo.`,
-            statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-ruedas-biki-2025.json',
-            description: `Exige que se renueven las ruedas desgastadas de las bicicletas BIKI por seguridad y para evitar más accidentes`,
-            subtitle: `AUVASA y el Ayuntamiento de Valladolid están consintiendo la degradación del servicio BIKI al desoír las [quejas por no reemplazar las ruedas desgastadas](https://www.elespanol.com/castilla-y-leon/region/valladolid/20250922/usuarios-biki-ponen-grito-cielo-apariencia-ruedas-bicis-auvasa-responde-estetica/1003743935259_0.html), que suponen un peligro y han causado ya varios accidentes y caidas entre los vecinos/as. <br><br>La propia reglamentación de BIKI nos obliga como usuarios del servicio a informar de desperfectos y otras incidencias. Este formulario te ayudará a hacerlo directamente para exigir que se tomen medidas.`,
+            slug: 'auvasa-horarios',
+            whatsappNumber: '',
+            complaintTemplate: ``,
+            statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-auvasa-horarios.json',
+            description: `Exige una mejora en el servicio de autobuses municipales con la herramienta de VallaBus`,
+            subtitle: ``,
             customConfig: null
         };
 
         // Stats se cargan dinámicamente
         let STATS_DATA = null;
 
-        // Configuración de Discourse Embed
-        window.DiscourseEmbed = {
-            discourseUrl: 'https://foro.aldeapucela.org/',
-            topicId: 818
-        };
 
         // Aplicar custom_config si existe
         document.addEventListener('DOMContentLoaded', function() {
