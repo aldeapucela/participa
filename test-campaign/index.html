@@ -24,7 +24,7 @@
     
     <!-- SEO Meta Tags -->
     <title>Campaña de Prueba - Aldea Pucela</title>
-    <meta name="description" content="Esta es una campaña de prueba para validar el sistema">
+    <meta name="description" content="Esta es una campaña de prueba para [validar](https://aldeapucela.org) el sistema">
     <meta name="keywords" content="Campaña de Prueba, Valladolid, ayuntamiento, participación ciudadana">
     <meta name="author" content="aldeapucela">
     
@@ -32,14 +32,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://participa.aldeapucela.org/test-campaign">
     <meta property="og:title" content="Campaña de Prueba">
-    <meta property="og:description" content="Esta es una campaña de prueba para validar el sistema">
+    <meta property="og:description" content="Esta es una campaña de prueba para [validar](https://aldeapucela.org) el sistema">
     <meta property="og:image" content="https://participa.aldeapucela.org/test-campaign/img/social-preview.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://participa.aldeapucela.org/test-campaign">
     <meta property="twitter:title" content="Campaña de Prueba">
-    <meta property="twitter:description" content="Esta es una campaña de prueba para validar el sistema">
+    <meta property="twitter:description" content="Esta es una campaña de prueba para [validar](https://aldeapucela.org) el sistema">
     <meta property="twitter:image" content="https://participa.aldeapucela.org/test-campaign/img/social-preview.png">
     
     <!-- Favicon -->
@@ -51,6 +51,8 @@
     <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Marked.js for Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.0.0/marked.min.js"></script>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-gray-100 min-h-screen sm:p-8 p-2">
@@ -77,9 +79,8 @@
                 </div>
             </div>
 
-            <p class="text-gray-600 text-sm bg-aldeapucela-light p-6 rounded-lg">
-                Esta es una campaña de prueba para validar el sistema
-            </p>
+            <div id="campaign-description" class="text-gray-600 text-sm bg-aldeapucela-light p-6 rounded-lg">
+            </div>
             
             <form id="complaintForm" class="space-y-6">
                 <div class="space-y-2">
@@ -338,12 +339,22 @@
             slug: 'test-campaign',
             whatsappNumber: '34660010010',
             complaintTemplate: `Hola, mi nombre es {{nombre}}. Esta es una queja de prueba.`,
-            statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-test-campaign.json'
+            statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-test-campaign.json',
+            description: `Esta es una campaña de prueba para [validar](https://aldeapucela.org) el sistema`,
+            subtitle: ``
         };
 
         // Stats se cargan dinámicamente
         let STATS_DATA = null;
 
+
+        // Renderizar Markdown en subtitle
+        document.addEventListener('DOMContentLoaded', function() {
+            const descriptionEl = document.getElementById('campaign-description');
+            if (descriptionEl && CAMPAIGN_CONFIG.subtitle) {
+                descriptionEl.innerHTML = marked.parse(CAMPAIGN_CONFIG.subtitle);
+            }
+        });
     </script>
 
     <script src="../js/campaign.js"></script>

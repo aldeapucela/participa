@@ -49,6 +49,10 @@ async function generate() {
     await generateCampaignPage(campaign);
   }
   
+  // 6. Limpiar carpetas de campañas que ya no existen
+  console.log('🧹 Cleaning up old campaign folders...');
+  cleanupOldCampaigns(activeCampaigns);
+  
   console.log('✅ Generation complete!');
 }
 
@@ -155,6 +159,31 @@ function generateIndexPage(campaigns) {
   const indexPath = path.join(__dirname, '..', 'index.html');
   fs.writeFileSync(indexPath, html, 'utf8');
   console.log(`✅ Generated: index.html`);
+}
+
+function cleanupOldCampaigns(activeCampaigns) {
+  const rootDir = path.join(__dirname, '..');
+  const activeSlugs = new Set(activeCampaigns.map(c => c.slug));
+  
+  // Leer todos los directorios en la raíz
+  const entries = fs.readdirSync(rootDir, { withFileTypes: true });
+  
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    
+    const dirName = entry.name;
+    
+    // Ignorar directorios especiales
+    const ignoredDirs = ['.git', '.github', 'node_modules', 'scripts', '_templates', 'js', 'css', 'img', 'video'];
+    if (ignoredDirs.includes(dirName) || dirName.startsWith('.')) continue;
+    
+    // Si el directorio no está en las campañas activas, eliminarlo
+    if (!activeSlugs.has(dirName)) {
+      const dirPath = path.join(rootDir, dirName);
+      console.log(`  🗑️  Removing old campaign folder: ${dirName}`);
+      fs.rmSync(dirPath, { recursive: true, force: true });
+    }
+  }
 }
 
 async function generateCampaignPage(campaign) {

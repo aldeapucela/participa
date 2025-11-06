@@ -51,6 +51,8 @@
     <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Marked.js for Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.0.0/marked.min.js"></script>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-gray-100 min-h-screen sm:p-8 p-2">
@@ -77,13 +79,8 @@
                 </div>
             </div>
 
-            <p class="text-gray-600 text-sm bg-aldeapucela-light p-6 rounded-lg">
-                {{campaign.description}}
-                {{#if campaign.subtitle}}
-                <br/><br/>
-                {{{campaign.subtitle}}}
-                {{/if}}
-            </p>
+            <div id="campaign-description" class="text-gray-600 text-sm bg-aldeapucela-light p-6 rounded-lg">
+            </div>
             
             <form id="complaintForm" class="space-y-6">
                 <div class="space-y-2">
@@ -315,7 +312,9 @@
             slug: '{{campaign.slug}}',
             whatsappNumber: '{{campaign.whatsapp_number}}',
             complaintTemplate: `{{{campaign.complaint_template}}}`,
-            statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-{{campaign.slug}}.json'
+            statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-{{campaign.slug}}.json',
+            description: `{{{campaign.description}}}`,
+            subtitle: `{{{campaign.subtitle}}}`
         };
 
         // Stats se cargan dinámicamente
@@ -328,6 +327,14 @@
             topicId: {{campaign.forum_topic_id}}
         };
         {{/if}}
+
+        // Renderizar Markdown en subtitle
+        document.addEventListener('DOMContentLoaded', function() {
+            const descriptionEl = document.getElementById('campaign-description');
+            if (descriptionEl && CAMPAIGN_CONFIG.subtitle) {
+                descriptionEl.innerHTML = marked.parse(CAMPAIGN_CONFIG.subtitle);
+            }
+        });
     </script>
 
     <script src="../js/campaign.js"></script>
