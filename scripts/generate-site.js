@@ -93,6 +93,11 @@ function generateIndexPage(campaigns) {
                 Estas iniciativas buscan fomentar la implicación de la ciudadanía en la toma de decisiones y mejorar la transparencia en la gestión pública.
             </p>
             
+            <a href="https://proyectos.aldeapucela.org/dashboard/#/nc/form/b10b4ff5-cafd-4a1e-8a14-22390a1e6966" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-aldeapucela text-white rounded-md hover:bg-opacity-90 transition-colors">
+                <i data-lucide="lightbulb" class="h-5 w-5"></i>
+                Propón una campaña
+            </a>
+            
             <div class="space-y-4">
                 ${campaigns.map(campaign => {
                     const href = campaign.external_url || `/${campaign.slug}/`;
