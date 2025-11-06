@@ -107,13 +107,13 @@ Configura las credenciales de NocoDB en n8n.
 
 ### 4. Variables de entorno (opcional)
 
-Puedes personalizar las URLs mediante variables de entorno:
+Puedes personalizar la URL del JSON de campañas mediante variable de entorno:
 
 ```bash
 export CAMPAIGNS_JSON_URL="https://tu-servidor.com/campaigns.json"
-export STATS_BASE_URL="https://tu-servidor.com/stats/"
-export WEBHOOK_URL="https://tu-n8n.com/webhook/participations"
 ```
+
+Las stats se cargan dinámicamente en el frontend desde la URL configurada en el template (`_templates/campaign.html`).
 
 ## 🔧 Uso
 

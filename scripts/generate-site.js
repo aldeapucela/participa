@@ -5,8 +5,6 @@ const Handlebars = require('handlebars');
 
 // URLs públicas de los JSON generados por n8n (configurables mediante variables de entorno)
 const CAMPAIGNS_JSON_URL = process.env.CAMPAIGNS_JSON_URL || 'https://proyectos.aldeapucela.org/exports/participa/campaigns.json';
-const STATS_BASE_URL = process.env.STATS_BASE_URL || 'https://proyectos.aldeapucela.org/exports/participa/stats/';
-const WEBHOOK_URL = process.env.WEBHOOK_URL || 'https://tasks.nukeador.com/webhook/aldea-participa';
 
 // Función para descargar el JSON
 function fetchJSON(url) {
@@ -162,48 +160,31 @@ function generateIndexPage(campaigns) {
 async function generateCampaignPage(campaign) {
   const slug = campaign.slug;
   
-  // 1. Descargar stats de esta campaña
-  let stats = {
-    totales: { total_reclamaciones: 0, total_barrios: 0, barrios: {} },
-    historico_diario: {},
-    historico_semanal: []
-  };
+  // Las stats se cargan dinámicamente en el frontend, no necesitamos descargarlas aquí
+  console.log(`  📝 Generating page for ${slug}...`);
   
-  try {
-    const statsUrl = `${STATS_BASE_URL}stats-${slug}.json`;
-    stats = await fetchJSON(statsUrl);
-    console.log(`  ✅ Loaded stats for ${slug}`);
-  } catch (err) {
-    console.log(`  ⚠️  No stats found for ${slug}, using defaults`);
-  }
-  
-  // 2. Cargar template
+  // 1. Cargar template
   const templatePath = path.join(__dirname, '..', '_templates', 'campaign.html');
   const templateSource = fs.readFileSync(templatePath, 'utf8');
   
-  // 3. Registrar partial de barrios
+  // 2. Registrar partial de barrios
   const barriosPartialPath = path.join(__dirname, '..', '_templates', 'partials', 'barrios-options.html');
   const barriosPartial = fs.readFileSync(barriosPartialPath, 'utf8');
   Handlebars.registerPartial('barrios-options', barriosPartial);
   
-  // 4. Registrar helper json
-  Handlebars.registerHelper('json', function(context) {
-    return JSON.stringify(context);
-  });
-  
-  // 5. Compilar template
+  // 3. Compilar template
   const template = Handlebars.compile(templateSource);
   
-  // 6. Generar HTML con Handlebars
-  const html = template({ campaign, stats });
+  // 4. Generar HTML con Handlebars (sin stats, se cargan en frontend)
+  const html = template({ campaign });
 
-  // 3. Crear carpeta si no existe
+  // 5. Crear carpeta si no existe
   const campaignDir = path.join(__dirname, '..', slug);
   if (!fs.existsSync(campaignDir)) {
     fs.mkdirSync(campaignDir, { recursive: true });
   }
   
-  // 4. Escribir archivo
+  // 6. Escribir archivo
   const campaignPath = path.join(campaignDir, 'index.html');
   fs.writeFileSync(campaignPath, html, 'utf8');
   console.log(`  ✅ Generated: ${slug}/index.html`);
