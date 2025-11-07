@@ -269,9 +269,8 @@ function showConfirmationDialog(nombre) {
 }
 
 function sharePage() {
-    // Usar share_text si está definido, sino usar title + description
-    const shareText = CAMPAIGN_CONFIG.shareText || 
-                     `${CAMPAIGN_CONFIG.title || document.title}\n\n${CAMPAIGN_CONFIG.description || ''}`;
+    // Siempre usar title + description
+    const shareText = `${CAMPAIGN_CONFIG.title}\n\n${CAMPAIGN_CONFIG.description}`;
     
     const url = new URL(window.location.href);
     url.hash = '';
