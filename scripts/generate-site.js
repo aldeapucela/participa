@@ -205,11 +205,11 @@ function generateIndexPage(campaigns, assetVersions) {
                     const target = campaign.external_url ? ' target="_blank" rel="noopener noreferrer"' : '';
                     const statsHtml = campaign.stats ? `
                         <div class="flex items-center gap-3 mt-2 text-xs">
-                            <span class="flex items-center gap-1 text-aldeapucela font-semibold">
+                            <span class="flex items-center gap-1 text-aldeapucela font-normal">
                                 <i data-lucide="users" class="h-3.5 w-3.5"></i>
                                 ${campaign.stats.total_reclamaciones} vecinos/as
                             </span>
-                            <span class="flex items-center gap-1 text-aldeapucela font-semibold">
+                            <span class="flex items-center gap-1 text-aldeapucela font-normal">
                                 <i data-lucide="home" class="h-3.5 w-3.5"></i>
                                 ${campaign.stats.total_barrios} barrios
                             </span>
@@ -221,8 +221,8 @@ function generateIndexPage(campaigns, assetVersions) {
                         <div class="flex items-center gap-3">
                             <i data-lucide="${campaign.icon}" class="h-16 w-16 text-aldeapucela flex-shrink-0"></i>
                             <div class="flex-1">
-                                <h2 class="font-medium text-aldeapucela">${campaign.title}</h2>
-                                <p class="text-sm text-gray-600">${campaign.description}</p>
+                                <h2 class="font-bold text-aldeapucela">${campaign.title}</h2>
+                                <p class="text-sm text-gray-600 font-normal">${campaign.description}</p>
                                 ${statsHtml}
                             </div>
                         </div>
