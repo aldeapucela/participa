@@ -8,7 +8,7 @@
       default-src 'self';
       script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://stats.aldeapucela.org https://foro.aldeapucela.org https://proyectos.aldeapucela.org 'unsafe-inline';
       style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;
-      img-src 'self' data: https://participa.aldeapucela.org https://stats.aldeapucela.org https://aldeapucela.org;
+      img-src 'self' data: https://participa.aldeapucela.org https://stats.aldeapucela.org https://aldeapucela.org https://proyectos.aldeapucela.org;
       font-src 'self' https://cdn.jsdelivr.net;
       connect-src 'self' https://stats.aldeapucela.org https://participa.aldeapucela.org https://proyectos.aldeapucela.org https://tasks.nukeador.com;
       frame-src 'self' https://foro.aldeapucela.org;
@@ -33,14 +33,14 @@
     <meta property="og:url" content="https://participa.aldeapucela.org/{{campaign.slug}}">
     <meta property="og:title" content="{{campaign.title}}">
     <meta property="og:description" content="{{campaign.description}}">
-    <meta property="og:image" content="https://participa.aldeapucela.org/{{campaign.slug}}/img/social-preview.png">
+    <meta property="og:image" content="{{#if campaign.social_preview_url}}{{campaign.social_preview_url}}{{else}}https://participa.aldeapucela.org/favicon.png{{/if}}">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://participa.aldeapucela.org/{{campaign.slug}}">
     <meta property="twitter:title" content="{{campaign.title}}">
     <meta property="twitter:description" content="{{campaign.description}}">
-    <meta property="twitter:image" content="https://participa.aldeapucela.org/{{campaign.slug}}/img/social-preview.png">
+    <meta property="twitter:image" content="{{#if campaign.social_preview_url}}{{campaign.social_preview_url}}{{else}}https://participa.aldeapucela.org/favicon.png{{/if}}">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="../favicon.png">

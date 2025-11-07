@@ -17,6 +17,19 @@ function getFileHash(filePath) {
   }
 }
 
+// Función para extraer URL de social preview desde NocoDB
+function getSocialPreviewUrl(campaign) {
+  // Si tiene social_preview_img y es un array con elementos
+  if (campaign.social_preview_img && Array.isArray(campaign.social_preview_img) && campaign.social_preview_img.length > 0) {
+    const img = campaign.social_preview_img[0];
+    if (img.path) {
+      return `https://proyectos.aldeapucela.org/${img.path}`;
+    }
+  }
+  // Fallback a imagen por defecto
+  return 'https://participa.aldeapucela.org/img/social-preview.png';
+}
+
 // Función para descargar el JSON
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {
@@ -54,7 +67,12 @@ async function generate() {
   const activeCampaigns = campaigns.filter(c => c.active);
   console.log(`✅ ${activeCampaigns.length} active campaigns`);
   
-  // 3. Ordenar por order
+  // 3. Procesar social preview URLs
+  activeCampaigns.forEach(campaign => {
+    campaign.social_preview_url = getSocialPreviewUrl(campaign);
+  });
+  
+  // 4. Ordenar por order
   activeCampaigns.sort((a, b) => a.order - b.order);
   
   // 4. Generar index.html
@@ -86,6 +104,22 @@ function generateIndexPage(campaigns, assetVersions) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Participación vecinal - Aldea Pucela</title>
+    <meta name="description" content="Campañas de participación ciudadana de Aldea Pucela y organizaciones afines para fomentar la implicación en la toma de decisiones">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://participa.aldeapucela.org/">
+    <meta property="og:title" content="Participación vecinal - Aldea Pucela">
+    <meta property="og:description" content="Campañas de participación ciudadana de Aldea Pucela y organizaciones afines para fomentar la implicación en la toma de decisiones">
+    <meta property="og:image" content="https://participa.aldeapucela.org/img/social-preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://participa.aldeapucela.org/">
+    <meta property="twitter:title" content="Participación vecinal - Aldea Pucela">
+    <meta property="twitter:description" content="Campañas de participación ciudadana de Aldea Pucela y organizaciones afines para fomentar la implicación en la toma de decisiones">
+    <meta property="twitter:image" content="https://participa.aldeapucela.org/img/social-preview.png">
+    
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
