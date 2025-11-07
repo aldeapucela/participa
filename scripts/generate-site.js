@@ -67,10 +67,25 @@ async function generate() {
   const activeCampaigns = campaigns.filter(c => c.active);
   console.log(`✅ ${activeCampaigns.length} active campaigns`);
   
-  // 3. Procesar social preview URLs
-  activeCampaigns.forEach(campaign => {
+  // 3. Procesar social preview URLs y cargar stats
+  for (const campaign of activeCampaigns) {
     campaign.social_preview_url = getSocialPreviewUrl(campaign);
-  });
+    
+    // Cargar stats si no es externa
+    if (!campaign.external_url) {
+      try {
+        const statsUrl = `https://proyectos.aldeapucela.org/exports/participa/stats/stats-${campaign.slug}.json`;
+        const stats = await fetchJSON(statsUrl);
+        campaign.stats = {
+          total_reclamaciones: stats.totales?.total_reclamaciones || 0,
+          total_barrios: stats.totales?.total_barrios || 0
+        };
+      } catch (e) {
+        console.log(`  ⚠️  Could not load stats for ${campaign.slug}`);
+        campaign.stats = { total_reclamaciones: 0, total_barrios: 0 };
+      }
+    }
+  }
   
   // 4. Ordenar por order
   activeCampaigns.sort((a, b) => a.order - b.order);
@@ -133,34 +148,83 @@ function generateIndexPage(campaigns, assetVersions) {
             aldeapucela.org
         </a>
         
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-6">
-            <div class="flex items-center gap-2 mb-4">
-                <i data-lucide="users" class="h-6 w-6 text-aldeapucela"></i>
-                <h1 class="text-xl font-semibold text-aldeapucela">Participación vecinal</h1>
+        <!-- Hero Section -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <!-- Hero con imagen -->
+            <div class="relative">
+                <img src="img/hero-photo.jpg" alt="Vecinos participando" class="w-full h-64 sm:h-80 object-cover">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-6 text-center">
+                    <i data-lucide="users" class="h-12 w-12 mb-3 opacity-90"></i>
+                    <h1 class="text-2xl sm:text-4xl font-bold mb-3 drop-shadow-lg">Tu voz cuenta, juntos podemos cambiar las cosas</h1>
+                    <p class="text-base sm:text-lg mb-6 max-w-2xl opacity-95 drop-shadow">
+                        Crea campañas de participación vecinal en minutos y haz oír tu voz ante el ayuntamiento
+                    </p>
+                    <a href="https://proyectos.aldeapucela.org/dashboard/#/nc/form/b10b4ff5-cafd-4a1e-8a14-22390a1e6966" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-aldeapucela font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-lg">
+                        <i data-lucide="lightbulb" class="h-5 w-5"></i>
+                        Propón una campaña
+                    </a>
+                </div>
             </div>
-
-            <p class="text-gray-600 text-sm bg-aldeapucela-light p-6 rounded-lg">
-                Aquí se listan todas las campañas de participación vecinal de Aldea Pucela y organizaciones afines.
-                <br /><br />
-                Estas iniciativas buscan fomentar la implicación de la ciudadanía en la toma de decisiones y mejorar la transparencia en la gestión pública.
-            </p>
             
-            <a href="https://proyectos.aldeapucela.org/dashboard/#/nc/form/b10b4ff5-cafd-4a1e-8a14-22390a1e6966" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-aldeapucela text-white rounded-md hover:bg-opacity-90 transition-colors">
-                <i data-lucide="lightbulb" class="h-5 w-5"></i>
-                Propón una campaña
-            </a>
+            <!-- Stats compactos -->
+            <div class="p-6 sm:p-8">
+                <p class="text-center text-sm sm:text-base text-gray-700 mb-4">En el último año, <strong class="text-aldeapucela">más de 3.000 vecinos/as de 48 barrios</strong> han hecho oír su voz:</p>
+                <div class="bg-aldeapucela-light p-4 rounded-lg max-w-xl mx-auto mb-4">
+                    <ul class="text-sm space-y-2 text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="megaphone" class="h-4 w-4 text-aldeapucela flex-shrink-0 mt-0.5"></i>
+                            <span>Presionando por mejoras en transporte público y frecuencias de AUVASA</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="trending-up" class="h-4 w-4 text-aldeapucela flex-shrink-0 mt-0.5"></i>
+                            <span>Logrando récord histórico de 1.400 reclamaciones por integración ferroviaria</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="shield" class="h-4 w-4 text-aldeapucela flex-shrink-0 mt-0.5"></i>
+                            <span>Defendiendo presupuestos participativos en 35 barrios</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="alert-circle" class="h-4 w-4 text-aldeapucela flex-shrink-0 mt-0.5"></i>
+                            <span>Dando visibilidad al problema de seguridad en el servicio BIKI</span>
+                        </li>
+                    </ul>
+                </div>
+                <p class="text-center text-aldeapucela font-semibold">¿Qué problema ves en tu barrio? Sé parte del cambio</p>
+            </div>
+        </div>
+
+        <!-- Campaigns Section -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-4">
+            <h2 class="text-xl font-semibold text-aldeapucela mb-2">Campañas activas</h2>
+            <p class="text-sm text-gray-600 mb-4">Participa en las siguientes campañas o propón una nueva</p>
             
             <div class="space-y-4">
                 ${campaigns.map(campaign => {
                     const href = campaign.external_url || `/${campaign.slug}/`;
                     const target = campaign.external_url ? ' target="_blank" rel="noopener noreferrer"' : '';
+                    const statsHtml = campaign.stats ? `
+                        <div class="flex items-center gap-3 mt-2 text-xs">
+                            <span class="flex items-center gap-1 text-aldeapucela font-semibold">
+                                <i data-lucide="users" class="h-3.5 w-3.5"></i>
+                                ${campaign.stats.total_reclamaciones} vecinos/as
+                            </span>
+                            <span class="flex items-center gap-1 text-aldeapucela font-semibold">
+                                <i data-lucide="home" class="h-3.5 w-3.5"></i>
+                                ${campaign.stats.total_barrios} barrios
+                            </span>
+                        </div>
+                    ` : '';
                     return `
                 <div class="border border-gray-200 rounded-lg p-4 hover:bg-aldeapucela-light transition-colors">
-                    <a href="${href}"${target} class="flex items-center gap-3">
-                        <i data-lucide="${campaign.icon}" class="h-16 w-16 text-aldeapucela"></i>
-                        <div>
-                            <h2 class="font-medium text-aldeapucela">${campaign.title}</h2>
-                            <p class="text-sm text-gray-600">${campaign.description}</p>
+                    <a href="${href}"${target} class="block">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="${campaign.icon}" class="h-16 w-16 text-aldeapucela flex-shrink-0"></i>
+                            <div class="flex-1">
+                                <h2 class="font-medium text-aldeapucela">${campaign.title}</h2>
+                                <p class="text-sm text-gray-600">${campaign.description}</p>
+                                ${statsHtml}
+                            </div>
                         </div>
                     </a>
                 </div>
