@@ -269,7 +269,10 @@ function showConfirmationDialog(nombre) {
 }
 
 function sharePage() {
-    const text = `Participa en la campaña: ${CAMPAIGN_CONFIG.slug}\n\n`;
+    // Usar share_text si está definido, sino usar title + description
+    const shareText = CAMPAIGN_CONFIG.shareText || 
+                     `${CAMPAIGN_CONFIG.title || document.title}\n\n${CAMPAIGN_CONFIG.description || ''}`;
+    
     const url = new URL(window.location.href);
     url.hash = '';
     url.search = '?mtm_campaign=share';
@@ -277,13 +280,13 @@ function sharePage() {
     if (navigator.share) {
         navigator.share({
             title: document.title,
-            text: text,
+            text: shareText + '\n\n',
             url: url.toString()
         }).catch((error) => console.log('Error compartiendo:', error));
     } else {
         const dummy = document.createElement('textarea');
         document.body.appendChild(dummy);
-        dummy.value = text + url.toString();
+        dummy.value = shareText + '\n\n' + url.toString();
         dummy.select();
         document.execCommand('copy');
         document.body.removeChild(dummy);

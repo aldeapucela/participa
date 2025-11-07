@@ -311,11 +311,13 @@
         // Configuración de la campaña desde NocoDB
         const CAMPAIGN_CONFIG = {
             slug: '{{campaign.slug}}',
+            title: '{{campaign.title}}',
             whatsappNumber: '{{campaign.whatsapp_number}}',
             complaintTemplate: `{{{campaign.complaint_template}}}`,
             statsUrl: 'https://proyectos.aldeapucela.org/exports/participa/stats/stats-{{campaign.slug}}.json',
             description: `{{{campaign.description}}}`,
             subtitle: `{{{campaign.subtitle}}}`,
+            shareText: {{#if campaign.share_text}}`{{{campaign.share_text}}}`{{else}}null{{/if}},
             customConfig: {{{json campaign.custom_config}}}
         };
 
