@@ -153,12 +153,13 @@ function generateIndexPage(campaigns, assetVersions) {
             <!-- Hero con imagen -->
             <div class="relative">
                 <img src="img/hero-photo.jpg" alt="Vecinos participando" class="w-full h-64 sm:h-80 object-cover">
-                <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/60 to-black/70"></div>
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-6 text-center">
                     <i data-lucide="users" class="h-12 w-12 mb-3 opacity-90"></i>
                     <h1 class="text-2xl sm:text-4xl font-bold mb-3 drop-shadow-lg">Tu voz cuenta, juntos podemos cambiar las cosas</h1>
                     <p class="text-base sm:text-lg mb-6 max-w-2xl opacity-95 drop-shadow">
-                        Crea campañas de participación vecinal en minutos y haz oír tu voz ante el ayuntamiento de Valladolid
+                        Crea campañas de participación vecinal en minutos <br>
+                        y haz oír tu voz ante el ayuntamiento de Valladolid
                     </p>
                     <a href="https://proyectos.aldeapucela.org/dashboard/#/nc/form/b10b4ff5-cafd-4a1e-8a14-22390a1e6966" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-aldeapucela font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-lg">
                         <i data-lucide="lightbulb" class="h-5 w-5"></i>
