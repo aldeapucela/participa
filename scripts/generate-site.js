@@ -1,10 +1,21 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const Handlebars = require('handlebars');
 
 // URLs públicas de los JSON generados por n8n (configurables mediante variables de entorno)
 const CAMPAIGNS_JSON_URL = process.env.CAMPAIGNS_JSON_URL || 'https://proyectos.aldeapucela.org/exports/participa/campaigns.json';
+
+// Función para generar hash de archivo para cache busting
+function getFileHash(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    return crypto.createHash('md5').update(content).digest('hex').substring(0, 8);
+  } catch (e) {
+    return Date.now().toString();
+  }
+}
 
 // Función para descargar el JSON
 function fetchJSON(url) {
@@ -27,6 +38,13 @@ function fetchJSON(url) {
 async function generate() {
   console.log('🚀 Starting campaign generation...');
   
+  // 0. Calcular hashes de CSS y JS para cache busting
+  const rootDir = path.join(__dirname, '..');
+  const cssHash = getFileHash(path.join(rootDir, 'css', 'style.css'));
+  const jsHash = getFileHash(path.join(rootDir, 'js', 'campaign.js'));
+  const assetVersions = { css: cssHash, js: jsHash };
+  console.log(`🔑 Asset versions: CSS=${cssHash}, JS=${jsHash}`);
+  
   // 1. Descargar campaigns.json
   console.log('📥 Fetching campaigns data...');
   const campaigns = await fetchJSON(CAMPAIGNS_JSON_URL);
@@ -41,13 +59,13 @@ async function generate() {
   
   // 4. Generar index.html
   console.log('📝 Generating index.html...');
-  generateIndexPage(activeCampaigns);
+  generateIndexPage(activeCampaigns, assetVersions);
   
   // 5. Generar páginas individuales de cada campaña (excepto las externas)
   console.log('📝 Generating campaign pages...');
   for (const campaign of activeCampaigns) {
     if (!campaign.external_url) {
-      await generateCampaignPage(campaign);
+      await generateCampaignPage(campaign, assetVersions);
     } else {
       console.log(`  ⏭️  Skipping external campaign: ${campaign.slug}`);
     }
@@ -60,7 +78,7 @@ async function generate() {
   console.log('✅ Generation complete!');
 }
 
-function generateIndexPage(campaigns) {
+function generateIndexPage(campaigns, assetVersions) {
   // Template simple por ahora
   const html = `<!DOCTYPE html>
 <html lang="es">
@@ -72,7 +90,7 @@ function generateIndexPage(campaigns) {
     <link rel="apple-touch-icon" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=${assetVersions.css}">
 </head>
 <body class="bg-gray-100 min-h-screen sm:p-8 p-2">
     <div class="max-w-2xl mx-auto space-y-2">
@@ -200,7 +218,7 @@ function cleanupOldCampaigns(activeCampaigns) {
   }
 }
 
-async function generateCampaignPage(campaign) {
+async function generateCampaignPage(campaign, assetVersions) {
   const slug = campaign.slug;
   
   // Las stats se cargan dinámicamente en el frontend, no necesitamos descargarlas aquí
@@ -224,7 +242,7 @@ async function generateCampaignPage(campaign) {
   const template = Handlebars.compile(templateSource);
   
   // 4. Generar HTML con Handlebars (sin stats, se cargan en frontend)
-  const html = template({ campaign });
+  const html = template({ campaign, assetVersions });
 
   // 5. Crear carpeta si no existe
   const campaignDir = path.join(__dirname, '..', slug);
