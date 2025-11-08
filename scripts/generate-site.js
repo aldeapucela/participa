@@ -160,7 +160,7 @@ function generateIndexPage(campaigns, assetVersions) {
                     <p class="text-base sm:text-lg mb-6 max-w-md opacity-95 drop-shadow">
                         Crea campañas de participación vecinal en minutos y haz oír tu voz ante el ayuntamiento de Valladolid
                     </p>
-                    <a href="https://proyectos.aldeapucela.org/dashboard/#/nc/form/b10b4ff5-cafd-4a1e-8a14-22390a1e6966" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-aldeapucela font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-lg">
+                    <a href="/propuesta/" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-aldeapucela font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-lg">
                         <i data-lucide="lightbulb" class="h-5 w-5"></i>
                         Propón una campaña
                     </a>
@@ -304,7 +304,7 @@ function cleanupOldCampaigns(activeCampaigns) {
     const dirName = entry.name;
     
     // Ignorar directorios especiales
-    const ignoredDirs = ['.git', '.github', 'node_modules', 'scripts', '_templates', 'js', 'css', 'img', 'video'];
+    const ignoredDirs = ['.git', '.github', 'node_modules', 'scripts', '_templates', 'js', 'css', 'img', 'video', 'propuesta'];
     if (ignoredDirs.includes(dirName) || dirName.startsWith('.')) continue;
     
     // Si el directorio no está en las campañas activas, eliminarlo
