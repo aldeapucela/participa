@@ -229,6 +229,10 @@
                         ¡Actúa por tu barrio! Reclama al Ayuntamiento la mejora de las plazas de nuestro barrio. Es muy fácil.
                     </p>
                     <div id="newsletter-button-container"></div>
+                    <a href="#comments" class="w-full bg-aldeapucela-light text-base py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 flex items-center justify-center gap-2">
+                        <i data-lucide="message-square" class="h-5 w-5"></i>
+                        <span id="comments-label">Ver comentarios</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -322,6 +326,15 @@
             </div>
         </div>
 
+        <!-- Comentarios en el foro -->
+        <div id="comments" class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+            <h2 class="text-xl font-semibold text-primary mb-2">Comentarios</h2>
+            <div class="flex justify-between items-center mb-4">
+                <p class="text-sm text-gray-600">Déjanos tu opinión también</p>
+                <a href="https://foro.aldeapucela.org/t/856" class="text-sm text-aldeapucela hover:underline">Añadir comentario</a>
+            </div>
+            <div id='discourse-comments'></div>
+        </div>
 
         <!-- Bloque de licencia -->
         <div class="bg-white sm:p-6 p-4 rounded-lg shadow-sm border border-gray-100">
@@ -371,6 +384,11 @@
         // Stats se cargan dinámicamente
         let STATS_DATA = null;
 
+        // Configuración de Discourse Embed
+        window.DiscourseEmbed = {
+            discourseUrl: 'https://foro.aldeapucela.org/',
+            topicId: 856
+        };
 
         // Aplicar custom_config si existe
         document.addEventListener('DOMContentLoaded', function() {
