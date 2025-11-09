@@ -2,7 +2,7 @@ name: Generate Campaigns
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Cada 5 minutos
+    - cron: '*/30 * * * *'  # Cada 30 minutos
   workflow_dispatch:  # Permite ejecutar manualmente
 
 permissions:
