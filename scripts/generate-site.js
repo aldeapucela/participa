@@ -47,6 +47,50 @@ function fetchJSON(url) {
   });
 }
 
+function hasExplicitOrder(campaign) {
+  if (campaign.order === null || campaign.order === undefined || campaign.order === '') {
+    return false;
+  }
+
+  return Number.isFinite(Number(campaign.order));
+}
+
+function getCreatedTimestamp(campaign) {
+  const rawDate = campaign.date || campaign.created_at || campaign.createdAt || campaign.created;
+  const timestamp = rawDate ? new Date(rawDate).getTime() : 0;
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function getCampaignId(campaign) {
+  const id = Number(campaign.Id ?? campaign.id);
+  return Number.isFinite(id) ? id : 0;
+}
+
+function compareCampaigns(a, b) {
+  const aHasOrder = hasExplicitOrder(a);
+  const bHasOrder = hasExplicitOrder(b);
+
+  if (aHasOrder && bHasOrder) {
+    return Number(a.order) - Number(b.order);
+  }
+
+  if (aHasOrder) {
+    return -1;
+  }
+
+  if (bHasOrder) {
+    return 1;
+  }
+
+  const dateDifference = getCreatedTimestamp(b) - getCreatedTimestamp(a);
+
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return getCampaignId(b) - getCampaignId(a);
+}
+
 // Función principal
 async function generate() {
   console.log('🚀 Starting campaign generation...');
@@ -87,8 +131,8 @@ async function generate() {
     }
   }
   
-  // 4. Ordenar por order
-  activeCampaigns.sort((a, b) => a.order - b.order);
+  // 4. Ordenar respetando order y usando fecha de creación como fallback
+  activeCampaigns.sort(compareCampaigns);
   
   // 4. Generar index.html
   console.log('📝 Generating index.html...');
