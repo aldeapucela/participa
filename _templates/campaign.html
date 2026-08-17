@@ -33,18 +33,18 @@
     <meta property="og:url" content="https://participa.aldeapucela.org/{{campaign.slug}}">
     <meta property="og:title" content="{{campaign.title}}">
     <meta property="og:description" content="{{campaign.description}}">
-    <meta property="og:image" content="{{#if campaign.social_preview_url}}{{campaign.social_preview_url}}{{else}}https://participa.aldeapucela.org/favicon.png{{/if}}">
+    <meta property="og:image" content="{{#if campaign.social_preview_url}}{{campaign.social_preview_url}}{{else}}https://participa.aldeapucela.org/img/logo-web.jpg{{/if}}">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://participa.aldeapucela.org/{{campaign.slug}}">
     <meta property="twitter:title" content="{{campaign.title}}">
     <meta property="twitter:description" content="{{campaign.description}}">
-    <meta property="twitter:image" content="{{#if campaign.social_preview_url}}{{campaign.social_preview_url}}{{else}}https://participa.aldeapucela.org/favicon.png{{/if}}">
+    <meta property="twitter:image" content="{{#if campaign.social_preview_url}}{{campaign.social_preview_url}}{{else}}https://participa.aldeapucela.org/img/logo-web.jpg{{/if}}">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="../favicon.png">
-    <link rel="apple-touch-icon" href="../favicon.png">
+    <link rel="icon" type="image/png" href="../favicon.png?v=2">
+    <link rel="apple-touch-icon" href="../favicon.png?v=2">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -234,7 +234,7 @@
                 <div class="flex items-start gap-3">
                     <div>
                         <h2 class="text-xl font-semibold text-primary mb-2 flex items-center justify-center" id="org-title">
-                            <img src="{{#if campaign.about_organization_logo}}{{campaign.about_organization_logo}}{{else}}../favicon.png{{/if}}" alt="Organización" class="h-8 w-8 rounded-full mr-2">
+                            <img src="{{#if campaign.about_organization_logo}}{{campaign.about_organization_logo}}{{else}}../img/logo-web.jpg{{/if}}" alt="Logo de Aldea Pucela" class="h-8 w-8 rounded-full mr-2 object-cover">
                             <span id="org-name">Aldea Pucela</span>
                         </h2>
                         <p class="text-primary text-sm leading-relaxed mb-4 mt-4">

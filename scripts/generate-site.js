@@ -179,8 +179,8 @@ function generateIndexPage(campaigns, assetVersions) {
     <meta property="twitter:description" content="Campañas de participación ciudadana de Aldea Pucela y organizaciones afines para fomentar la implicación en la toma de decisiones">
     <meta property="twitter:image" content="https://participa.aldeapucela.org/img/social-preview.png">
     
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <link rel="apple-touch-icon" href="favicon.png?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.482.0/dist/umd/lucide.min.js"></script>
     <link rel="stylesheet" href="css/style.css?v=${assetVersions.css}">
